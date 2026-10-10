@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PublishAot>true</PublishAot>
+    <ILLinkTreatWarningsAsErrors>true</ILLinkTreatWarningsAsErrors>
+    <IlcTreatWarningsAsErrors>true</IlcTreatWarningsAsErrors>
+    <TrimmerSingleWarn>false</TrimmerSingleWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
+    <ProjectReference Include="../../src/Classic.Avalonia.Theme.ColorPicker/Classic.Avalonia.Theme.ColorPicker.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(AnalyzeAllLibraryMembers)' == 'true'">
+    <TrimmerRootAssembly Include="Classic.CommonControls.Avalonia" />
+    <TrimmerRootAssembly Include="Classic.Avalonia.Theme" />
+    <TrimmerRootAssembly Include="Classic.Avalonia.Theme.ColorPicker" />
+  </ItemGroup>
+</Project>

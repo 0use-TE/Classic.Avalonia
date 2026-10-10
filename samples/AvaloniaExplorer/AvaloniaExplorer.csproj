@@ -1,7 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
         <Nullable>enable</Nullable>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
@@ -26,5 +25,9 @@
       <AvaloniaResource Include="Icons\cpl\*.gif" />
       <None Remove="Icons\avalonia.png" />
       <AvaloniaResource Include="Icons\avalonia.png" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Include="..\Shared\*.cs" Link="Shared\%(Filename)%(Extension)" />
+      <AvaloniaResource Include="..\Shared\Audio\*.wav" Link="Audio\%(Filename)%(Extension)" />
     </ItemGroup>
 </Project>

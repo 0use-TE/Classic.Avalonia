@@ -10,7 +10,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
       - name: Setup .NET
@@ -19,5 +23,56 @@ jobs:
           dotnet-version: "10.0.x"
       - name: Build
         run: |
-          dotnet workload restore
           dotnet build --configuration Release
+      - name: Test
+        run: dotnet test tests/Classic.Avalonia.Tests/Classic.Avalonia.Tests.csproj --configuration Release --no-build
+
+  aot-libraries:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+      - name: Analyze all library members with NativeAOT
+        run: dotnet publish tests/Classic.Avalonia.AotTests/Classic.Avalonia.AotTests.csproj -c Release -r win-x64 -p:AnalyzeAllLibraryMembers=true -p:GeneratePackageOnBuild=false -o artifacts/aot/library-analysis
+      - name: Run library checks in NativeAOT
+        run: ./artifacts/aot/library-analysis/Classic.Avalonia.AotTests.exe
+      - name: Publish with normal trimming
+        run: dotnet publish tests/Classic.Avalonia.AotTests/Classic.Avalonia.AotTests.csproj -c Release -r win-x64 -p:GeneratePackageOnBuild=false -o artifacts/aot/library-trimmed
+      - name: Verify trimmed NativeAOT library behavior
+        run: ./artifacts/aot/library-trimmed/Classic.Avalonia.AotTests.exe
+
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+      - run: dotnet workload install wasm-tools
+      - run: dotnet publish samples/Classic.Demo.Browser/Classic.Demo.Browser.csproj -c Release
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - run: dotnet workload install android
+      - run: dotnet build samples/Classic.Demo.Android/Classic.Demo.Android.csproj -c Release
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+      - run: dotnet workload install ios
+      - run: dotnet build samples/Classic.Demo.iOS/Classic.Demo.iOS.csproj -c Debug -r iossimulator-arm64 -p:EnableCodeSigning=false

@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Demo/">
+    <Project Path="Classic.Demo/Classic.Demo.csproj" />
+    <Project Path="Classic.Demo.Desktop/Classic.Demo.Desktop.csproj" />
+    <Project Path="Classic.Demo.Android/Classic.Demo.Android.csproj" />
+    <Project Path="Classic.Demo.iOS/Classic.Demo.iOS.csproj" />
+    <Project Path="Classic.Demo.Browser/Classic.Demo.Browser.csproj" />
+  </Folder>
+  <Folder Name="/Libraries/">
+    <Project Path="../src/Classic.Avalonia.Theme/Classic.Avalonia.Theme.csproj" />
+    <Project Path="../src/Classic.Avalonia.Theme.ColorPicker/Classic.Avalonia.Theme.ColorPicker.csproj" />
+    <Project Path="../src/Classic.CommonControls.Avalonia/Classic.CommonControls.Avalonia.csproj" />
+  </Folder>
+</Solution>

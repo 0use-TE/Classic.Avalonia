@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -15,7 +15,7 @@ namespace Classic.Avalonia.Theme;
 
 public class ClassicTheme : Styles
 {
-    public static readonly StyledProperty<bool> FontAliasingProperty = AvaloniaProperty.Register<ClassicTheme, bool>(nameof(FontAliasing), defaultValue: true);
+    public static readonly StyledProperty<bool> FontAliasingProperty = AvaloniaProperty.Register<ClassicTheme, bool>(nameof(FontAliasing), defaultValue: false);
     public static ThemeVariant Standard { get; } = new("Standard", ThemeVariant.Light);
     public static ThemeVariant Classic { get; } = new("Classic", ThemeVariant.Light);
     public static ThemeVariant Brick { get; } = new("Brick", ThemeVariant.Light);
@@ -47,13 +47,7 @@ public class ClassicTheme : Styles
         {
             UpdateRangeClasses(bar);
         });
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        {
-            Control.LoadedEvent.AddClassHandler<Window>((window, _) =>
-            {
-                window.Classes.Add("__classic_theme_is_mac");
-            });
-        }
+
 
         FontAliasingProperty.Changed.AddClassHandler<ClassicTheme>((theme, e) =>
         {

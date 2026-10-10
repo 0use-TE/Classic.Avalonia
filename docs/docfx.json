@@ -1,0 +1,44 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "..",
+          "files": [
+            "src/Classic.CommonControls.Avalonia/Classic.CommonControls.Avalonia.csproj",
+            "src/Classic.Avalonia.Theme/Classic.Avalonia.Theme.csproj",
+            "src/Classic.Avalonia.Theme.ColorPicker/Classic.Avalonia.Theme.ColorPicker.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "properties": {
+        "TargetFramework": "net10.0",
+        "Configuration": "Release",
+        "GeneratePackageOnBuild": "false"
+      },
+      "disableGitFeatures": true
+    }
+  ],
+  "build": {
+    "content": [
+      { "files": ["index.md", "toc.yml", "guides/**.md", "guides/toc.yml", "api/**.yml"] }
+    ],
+    "resource": [
+      { "src": "..", "files": ["icon.png"], "dest": "images" },
+      { "src": "../artifacts/pages/browser/wwwroot", "files": ["index.html"], "dest": "demo" }
+    ],
+    "output": "_site",
+    "template": ["default", "modern"],
+    "globalMetadata": {
+      "_appTitle": "Classic.Avalonia",
+      "_appName": "Classic.Avalonia",
+      "_appLogoPath": "images/icon.png",
+      "_appFaviconPath": "images/icon.png",
+      "_appFooter": "Classic.Avalonia 使用文档 · 基于当前仓库源码",
+      "_enableSearch": true,
+      "_disableContribution": true,
+      "_lang": "zh-cn"
+    }
+  }
+}

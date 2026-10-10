@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Classic.CommonControls.Dialogs;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -12,17 +13,36 @@ namespace Notepad;
 
 public class NotepadViewModel : INotifyPropertyChanged
 {
-    public FontFamily Font { get; private set; } = FontManager.Current.DefaultFontFamily;
-    public FontStyle FontStyle { get; private set; } = FontStyle.Normal;
-    public FontWeight FontWeight { get; private set; } = FontWeight.Normal;
-    public double FontSize { get; private set; } = 11;
-
-    public async void SelectFont(Window parent)
+    public TextDocument Document { get; private set; } = new();
+    public string Text
     {
-        var font = await FontDialog.ShowDialog(parent);
-        if (font == null)
-            return;
+        get => Document.Text;
+        set { if (Document.Text == (value ?? "")) return; Document.Text = value ?? ""; RefreshDocument(); }
+    }
+    public string Title => (Document.IsModified ? "*" : "") + Document.DisplayName + " - Notepad";
+    public string FileStatus => (Document.EncodingKind == TextEncoding.SystemAnsi ? "ANSI " + Document.LegacyCodePage : Document.EncodingKind.ToString()) + " | " + (Document.NewLine == "\r\n" ? "CRLF" : Document.NewLine == "\n" ? "LF" : "CR");
+    private string _position = "Ln 1, Col 1";
+    public string Position { get => _position; set => SetField(ref _position, value); }
+    public FontFamily Font { get; private set; } = new("fonts:Classic#Liberation Sans, Tahoma, $Default");
+    public FontStyle FontStyle { get; private set; }
+    public FontWeight FontWeight { get; private set; } = FontWeight.Normal;
+    public double FontSize { get; private set; } = 13;
 
+    public void SetDocument(TextDocument document)
+    {
+        Document = document;
+        RefreshDocument();
+    }
+    public void RefreshDocument()
+    {
+        OnPropertyChanged(nameof(Text));
+        OnPropertyChanged(nameof(Title));
+        OnPropertyChanged(nameof(FileStatus));
+    }
+    public async Task SelectFont(Window parent)
+    {
+        var font = await FontDialog.ShowDialog(parent, new FontDialogResult(Font, FontStyle, FontWeight, FontSize));
+        if (font == null) return;
         Font = font.Family;
         FontStyle = font.Style;
         FontWeight = font.Weight;
@@ -32,39 +52,21 @@ public class NotepadViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(FontWeight));
         OnPropertyChanged(nameof(FontSize));
     }
-
-    public async void About(Window parent)
+    public async Task About(Window parent)
     {
-        await AboutDialog.ShowDialog(parent, new AboutDialogOptions()
+        using var icon = new Bitmap(AssetLoader.Open(new Uri("avares://Notepad/icon32.png")));
+        await AboutDialog.ShowDialog(parent, new AboutDialogOptions
         {
-            Title = "Notepad",
-            Copyright = "Copyleft (R) 2024 BAndysc",
-            Icon = new Bitmap(AssetLoader.Open(new Uri("avares://Notepad/icon32.png")))
+            Title = "Notepad", Copyright = "Classic.Avalonia Notepad", Icon = icon
         });
     }
-
-    public async void NotImplemented(Window parent)
-    {
-        await MessageBox.ShowDialog(parent, "Not implemented", "Error", MessageBoxButtons.Ok, MessageBoxIcon.Error);
-    }
-
-
-    #region INPC
-
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    protected virtual void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? name = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return false;
         field = value;
-        OnPropertyChanged(propertyName);
+        OnPropertyChanged(name);
         return true;
     }
-
-    #endregion
 }

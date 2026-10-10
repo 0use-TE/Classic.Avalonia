@@ -57,6 +57,8 @@ public class FontDialogViewModel : INotifyPropertyChanged
     public FontDialogViewModel()
     {
         Fonts = FontManager.Current.SystemFonts.ToList();
+        if (Fonts.Count == 0)
+            Fonts.Add(FontFamily.Default);
         selectedFont = Fonts[0];
         selectedFontSize = 11;
         UpdateFontStyles();
@@ -76,6 +78,7 @@ public class FontDialogViewModel : INotifyPropertyChanged
             selectedFont = initial.Family;
         }
         UpdateFontStyles();
+        fontNameText = selectedFont.Name;
         selectedFontSize = initial.Size;
         selectedFontStyle = FontStyles.FirstOrDefault(x => x.FontWeight == initial.Weight && x.FontStyle == initial.Style);
     }

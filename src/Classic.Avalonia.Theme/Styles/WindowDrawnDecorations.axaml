@@ -1,0 +1,210 @@
+<!--
+Adapted from Avalonia 12.0.0.
+The MIT License (MIT)
+
+Copyright (c) AvaloniaUI OÜ
+All Rights Reserved
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:common="clr-namespace:Classic.CommonControls;assembly=Classic.CommonControls.Avalonia"
+                    xmlns:classic="clr-namespace:Classic.Avalonia.Theme"
+                    xmlns:utils="clr-namespace:Classic.Avalonia.Theme.Utils"
+                    x:ClassModifier="internal">
+
+  <ControlTheme x:Key="ClassicDrawnCaptionButton" TargetType="Button" BasedOn="{StaticResource SimpleCaptionButton}">
+    <Setter Property="(WindowDecorationProperties.ElementRole)" Value="DecorationsElement" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Top" />
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+  </ControlTheme>
+
+  <ControlTheme x:Key="{x:Type WindowDrawnDecorations}" TargetType="WindowDrawnDecorations">
+    <Setter Property="DefaultTitleBarHeight" Value="{DynamicResource {x:Static common:SystemParameters.WindowCaptionHeightKey}}"/>
+    <Setter Property="DefaultFrameThickness" Value="2"/>
+    <Setter Property="DefaultShadowThickness" Value="0"/>
+    <Setter Property="Template">
+      <WindowDrawnDecorationsTemplate>
+        <WindowDrawnDecorationsContent>
+
+          <WindowDrawnDecorationsContent.Underlay>
+            <Panel x:Name="PART_UnderlayWrapper">
+              <classic:ClassicBorderDecorator x:Name="PART_WindowBorder" BorderStyle="AltRaised"
+                      Background="{DynamicResource {x:Static common:SystemColors.ControlBrushKey}}"
+                      BorderThickness="{TemplateBinding FrameThickness}"
+                      IsHitTestVisible="False" />
+              <!-- Titlebar: background, title text, and drag area live in underlay -->
+              <Panel x:Name="PART_TitleBar" VerticalAlignment="Top"
+                     Height="{TemplateBinding TitleBarHeight}"
+                     Background="{StaticResource InactiveTitleBarBrush}"
+                     IsVisible="{TemplateBinding HasTitleBar}"
+                     WindowDecorationProperties.ElementRole="TitleBar" />
+            </Panel>
+          </WindowDrawnDecorationsContent.Underlay>
+
+          <WindowDrawnDecorationsContent.Overlay>
+            <!-- Overlay: only interactive caption buttons -->
+            <Panel x:Name="PART_OverlayWrapper">
+              <!-- Title text lives in overlay so it renders above client content -->
+              <Panel x:Name="PART_TitleTextPanel" VerticalAlignment="Top"
+                     Height="{TemplateBinding TitleBarHeight}"
+                     IsHitTestVisible="False"
+                     IsVisible="{TemplateBinding HasTitleBar}">
+                <utils:AutoAttachTitleBar ShowCaptionButtons="False" />
+              </Panel>
+              <StackPanel x:Name="PART_OverlayPanel"
+                          VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          Height="{TemplateBinding TitleBarHeight}"
+                          Orientation="Horizontal"
+                          Spacing="0"
+                          IsVisible="{TemplateBinding HasTitleBar}"
+                          TextElement.FontSize="10">
+                <Button x:Name="PART_FullScreenButton" IsVisible="False"
+                        Theme="{StaticResource ClassicDrawnCaptionButton}"
+                        WindowDecorationProperties.ElementRole="FullScreenButton">
+                  <Viewbox Width="11" Margin="2">
+                    <Path RenderOptions.EdgeMode="Aliased" Name="FullScreenButtonPath"
+                          Stretch="UniformToFill"
+                          Fill="{DynamicResource {x:Static common:SystemColors.ControlTextBrushKey}}"
+                          Data="M2048 2048v-819h-205v469l-1493 -1493h469v-205h-819v819h205v-469l1493 1493h-469v205h819z" />
+                  </Viewbox>
+                </Button>
+                <Button x:Name="PART_MinimizeButton"
+                        Theme="{StaticResource ClassicDrawnCaptionButton}"
+                        WindowDecorationProperties.ElementRole="MinimizeButton"
+                        AutomationProperties.Name="Minimize">
+                  <Path RenderOptions.EdgeMode="Aliased" Name="MinimizeButtonPath" Margin="0,-1,0,0"
+                        Fill="{DynamicResource {x:Static common:SystemColors.ControlTextBrushKey}}"
+                        Data="{StaticResource ClassicCaptionMinimizeGeometry}" />
+                </Button>
+                <Button x:Name="PART_MaximizeButton"
+                        Theme="{StaticResource ClassicDrawnCaptionButton}"
+                        WindowDecorationProperties.ElementRole="MaximizeButton"
+                        AutomationProperties.Name="Maximize">
+                  <Path RenderOptions.EdgeMode="Aliased" Name="RestoreButtonPath" Margin="0,-1,0,0"
+                        Fill="{DynamicResource {x:Static common:SystemColors.ControlTextBrushKey}}"
+                        Data="{StaticResource ClassicCaptionMaximizeGeometry}" />
+                </Button>
+                <Button x:Name="PART_CloseButton" Margin="2,0,0,0"
+                        Theme="{StaticResource ClassicDrawnCaptionButton}"
+                        WindowDecorationProperties.ElementRole="CloseButton"
+                        AutomationProperties.Name="Close">
+                  <Path RenderOptions.EdgeMode="Aliased" Name="CloseButtonPath" Margin="1,0,0,0"
+                        Fill="{DynamicResource {x:Static common:SystemColors.ControlTextBrushKey}}"
+                        Data="{StaticResource ClassicCaptionCloseGeometry}" />
+                </Button>
+              </StackPanel>
+            </Panel>
+          </WindowDrawnDecorationsContent.Overlay>
+
+          <WindowDrawnDecorationsContent.FullscreenPopover>
+            <!-- Shown on hover at top edge in fullscreen mode -->
+            <Panel Height="30"
+                   VerticalAlignment="Top"
+                   Background="{StaticResource ActiveTitleBarBrush}"
+                   WindowDecorationProperties.ElementRole="TitleBar">
+              <TextBlock Text="{TemplateBinding Title}"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource {x:Static common:SystemColors.ActiveCaptionTextBrushKey}}"
+                         Margin="4,0,80,0"
+                         FontSize="{DynamicResource {x:Static common:NonClientMetrics.CaptionFontSizeKey}}" FontWeight="Bold" />
+              <StackPanel HorizontalAlignment="Right"
+                          Orientation="Horizontal"
+                          Spacing="0"
+                          TextElement.FontSize="10">
+                <Button x:Name="PART_PopoverFullScreenButton"
+                        Theme="{StaticResource ClassicDrawnCaptionButton}"
+                        WindowDecorationProperties.ElementRole="FullScreenButton">
+                  <Viewbox Width="11" Margin="2">
+                    <Path Stretch="UniformToFill"
+                          Fill="{DynamicResource {x:Static common:SystemColors.ControlTextBrushKey}}"
+                          Data="M205 1024h819v-819h-205v469l-674 -674l-145 145l674 674h-469v205zM1374 1229h469v-205h-819v819h205v-469l674 674l145 -145z" />
+                  </Viewbox>
+                </Button>
+                <Button x:Name="PART_PopoverCloseButton" Margin="2,0,0,0"
+                        Theme="{StaticResource ClassicDrawnCaptionButton}"
+                        WindowDecorationProperties.ElementRole="CloseButton"
+                        AutomationProperties.Name="Close">
+                  <Path RenderOptions.EdgeMode="Aliased" Name="PopoverCloseButtonPath" Margin="1,0,0,0"
+                        Fill="{DynamicResource {x:Static common:SystemColors.ControlTextBrushKey}}"
+                        Data="{StaticResource ClassicCaptionCloseGeometry}" />
+                </Button>
+              </StackPanel>
+            </Panel>
+          </WindowDrawnDecorationsContent.FullscreenPopover>
+
+        </WindowDrawnDecorationsContent>
+      </WindowDrawnDecorationsTemplate>
+    </Setter>
+
+    <!-- Border: inset titlebar and buttons inside frame -->
+    <Style Selector="^:has-border /template/ Panel#PART_TitleTextPanel">
+      <Setter Property="Margin" Value="2,2,2,0"/>
+    </Style>
+    <Style Selector="^:has-border /template/ Panel#PART_TitleBar">
+      <Setter Property="Margin" Value="2,2,2,0"/>
+    </Style>
+    <Style Selector="^:has-border /template/ StackPanel#PART_OverlayPanel">
+      <Setter Property="Margin" Value="0,2,2,0"/>
+    </Style>
+
+    <!-- Maximized: restore button path changes -->
+    <Style Selector="^:maximized /template/ Path#RestoreButtonPath">
+      <Setter Property="Data" Value="{StaticResource ClassicCaptionRestoreGeometry}" />
+    </Style>
+
+    <Style Selector="^:maximized /template/ Button#PART_MaximizeButton">
+      <Setter Property="AutomationProperties.Name" Value="Restore" />
+    </Style>
+
+    <!-- Disabled buttons -->
+    <Style Selector="^ /template/ Button:disabled">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+
+    <!-- Hide caption buttons when the platform does not support the action -->
+    <Style Selector="^:not(:has-minimize) /template/ Button#PART_MinimizeButton">
+      <Setter Property="IsVisible" Value="False"/>
+    </Style>
+    <Style Selector="^:not(:has-maximize) /template/ Button#PART_MaximizeButton">
+      <Setter Property="IsVisible" Value="False"/>
+    </Style>
+    <Style Selector="^:not(:has-fullscreen) /template/ Button#PART_FullScreenButton">
+      <Setter Property="IsVisible" Value="False"/>
+    </Style>
+    <Style Selector="^:not(:has-fullscreen) /template/ Button#PART_PopoverFullScreenButton">
+      <Setter Property="IsVisible" Value="False"/>
+    </Style>
+
+    <!-- Fullscreen: hide overlay and titlebar (popover takes over) -->
+    <Style Selector="^:fullscreen /template/ Panel#PART_TitleTextPanel">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:fullscreen /template/ StackPanel#PART_OverlayPanel">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^:fullscreen /template/ Panel#PART_TitleBar">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>

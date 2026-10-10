@@ -34,14 +34,27 @@ internal class GridExtensions
         RowDefinitionsExProperty.Changed.AddClassHandler<Grid>((grid, e) =>
         {
             grid.RowDefinitions.Clear();
-            grid.RowDefinitions.AddRange(e.GetNewValue<RowDefinitions>());
+            // Style values are shared; each grid must own its mutable layout definitions.
+            if (e.GetNewValue<RowDefinitions>() is { } rows)
+                foreach (var row in rows)
+                    grid.RowDefinitions.Add(new RowDefinition
+                    {
+                        Height = row.Height, MinHeight = row.MinHeight, MaxHeight = row.MaxHeight,
+                        SharedSizeGroup = row.SharedSizeGroup
+                    });
             grid.InvalidateMeasure();
             grid.InvalidateArrange();
         });
         ColumnDefinitionsExProperty.Changed.AddClassHandler<Grid>((grid, e) =>
         {
             grid.ColumnDefinitions.Clear();
-            grid.ColumnDefinitions.AddRange(e.GetNewValue<ColumnDefinitions>());
+            if (e.GetNewValue<ColumnDefinitions>() is { } columns)
+                foreach (var column in columns)
+                    grid.ColumnDefinitions.Add(new ColumnDefinition
+                    {
+                        Width = column.Width, MinWidth = column.MinWidth, MaxWidth = column.MaxWidth,
+                        SharedSizeGroup = column.SharedSizeGroup
+                    });
             grid.InvalidateMeasure();
             grid.InvalidateArrange();
         });

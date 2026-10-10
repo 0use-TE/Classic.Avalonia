@@ -4,7 +4,22 @@
 
 ## Avalonia 12
 
-Thanks to the great work of [definability](https://github.com/definability), the Classic.Avalonia theme is now available for Avalonia 12. The new controls have not yet been styled, so Classic.Avalonia is currently released as a pre-release package, version `12.0.1-beta1`.
+This checkout targets .NET 10 and Avalonia 12.0.0. The current repository package version is `12.0.0-beta1`. Use project references while the current implementation is being developed.
+
+## Documentation
+
+The [Chinese DocFX guide](docs/index.md) covers project-reference setup, color schemes, fonts, controls, Crystal samples and platform limits. API documentation is generated from the three current library projects.
+
+GitHub Pages serves [documentation](https://0use-TE.github.io/Classic.Avalonia/) and the [browser preview](https://0use-TE.github.io/Classic.Avalonia/demo/) from one site. The Documentation and Preview workflow deploys master; pull requests build the combined artifact without deploying. Enable GitHub Actions as the repository's Pages source. See [site build instructions](docs/guides/documentation.md).
+
+```powershell
+dotnet tool restore
+dotnet workload install wasm-tools
+dotnet publish samples/Classic.Demo.Browser/Classic.Demo.Browser.csproj -c Release -o artifacts/pages/browser
+dotnet docfx docs/docfx.json --warningsAsErrors
+pwsh -File scripts/Prepare-GitHubPages.ps1
+dotnet docfx serve artifacts/pages/site --hostname 127.0.0.1 --port 8091
+```
 
 ## Overview
 
@@ -12,9 +27,11 @@ This project brings the classic Windows 9x theme to Avalonia. It is inspired by 
 
 ## Installation
 
-1. Install the `Classic.Avalonia.Theme` package via NuGet:
-   ```
-   Install-Package Classic.Avalonia.Theme
+1. Reference the theme project from your application (adjust the relative path):
+   ```xml
+   <ItemGroup>
+     <ProjectReference Include="../Classic.Avalonia/src/Classic.Avalonia.Theme/Classic.Avalonia.Theme.csproj" />
+   </ItemGroup>
    ```
 2. In your `App.axaml`, replace the existing theme (e.g., `<FluentTheme />` or `<SimpleTheme />`) with the Classic theme:
    ```xml
@@ -25,23 +42,17 @@ This project brings the classic Windows 9x theme to Avalonia. It is inspired by 
    </Application>
    ```
 
-### DataGrid
-To use the DataGrid, install the `Classic.Avalonia.Theme.DataGrid` package and include the style in `App.axaml`:
+### ColorPicker
+For the ColorPicker, add a project reference and include the style in `App.axaml`:
 ```xml
-<StyleInclude Source="avares://Classic.Avalonia.Theme.DataGrid/Classic.axaml"/>
+<ProjectReference Include="../Classic.Avalonia/src/Classic.Avalonia.Theme.ColorPicker/Classic.Avalonia.Theme.ColorPicker.csproj" />
 ```
 
-### ColorPicker
-For the ColorPicker, install the `Classic.Avalonia.Theme.ColorPicker` package and include the style in `App.axaml`:
 ```xml
 <StyleInclude Source="avares://Classic.Avalonia.Theme.ColorPicker/Classic.axaml"/>
 ```
 
-### Dock
-There is also a classic theme for a fantastic [Wieslaw's Dock control](https://github.com/wieslawsoltes/Dock), install the `Classic.Avalonia.Theme.Dock` package and include the style in `App.axaml`:
-```xml
-<StyleInclude Source="avares://Classic.Avalonia.Theme.Dock/Classic.axaml" />
-```
+The DataGrid and Dock theme projects are not present in this checkout; their historical package instructions do not apply to the current project-reference setup.
 
 ### Color Scheme
 
@@ -50,19 +61,47 @@ To customize the color scheme, set the `RequestedThemeVariant` in `App.axaml` or
 RequestedThemeVariant="{x:Static ClassicTheme.Brick}"
 ```
 
+All built-in classic variants inherit from Light. There is no complete independent dark classic palette; selecting Avalonia Dark can mix dark auxiliary resources with the default classic palette. Prefer an explicit classic variant.
+
 ### Font Usage
 
-While Windows 9x used the bitmap font MS Sans Serif for its distinctive appearance, bitmap fonts have compatibility issues. Instead, the Classic.Avalonia theme uses Tahoma (introduced in Windows XP) without anti-aliasing for a similar look. Though it’s not perfect—letters may sometimes appear too close together, especially on macOS—it’s the closest match for now.
+The default embedded UI font is Tahoma regular/bold from the original Browser
+font assets. Normal UI/caption text uses the original 11 DIPs. Liberation Sans
+remains bundled for missing characters. Tahoma retains its Microsoft license.
+Neither family covers Chinese; desktop font fallback can provide it, while a
+Chinese Browser application needs a suitable embedded fallback font.
 
-Tahoma is available on Windows and macOS, but not Linux. A free alternative, 'Wine Tahoma Regular,' is distributed under the GNU Lesser General Public License, but I’m unsure if it’s compatible with the MIT license. Any insights would be appreciated.
+Register the embedded fonts in every application host:
+
+```csharp
+AppBuilder.Configure<App>().WithClassicFont();
+```
+
+The samples already register these fonts. Attribution, sources and licenses
+are in `src/Classic.Avalonia.Theme/Fonts/README.md` and are packaged with the theme.
 
 #### Font aliasing
 
-For the old look and feel, Classic.Avalonia disables antialiasing (smoothing) for font rendering. If for some reason, you would like to use Classic.Avalonia **with** font antialiasing, set property `FontAliasing` on the `ClassicTheme`:
+Classic.Avalonia defaults to grayscale antialiasing with Strong hinting and aligned baselines, keeping small Tahoma text readable. For optional unsmoothed retro rendering, set `FontAliasing` to true:
 
 ```
-<classic:ClassicTheme FontAliasing="False" />
+<classic:ClassicTheme FontAliasing="True" />
 ```
+
+## NativeAOT
+
+All three libraries declare `IsAotCompatible=true`. A dedicated library-only host checks all library members with NativeAOT and executes the same control, font, palette, picker and dialog checks in a normally trimmed native executable. AOT/trim diagnostics are treated as errors, without broad warning suppression. See [NativeAOT support and reproduction](docs/guides/native-aot.md).
+
+NativeAOT compatibility is separate from statically linking Avalonia's native graphics dependencies into one executable. StaticLink is an application deployment option, not a theme dependency.
+
+## Demo Architecture
+
+The shared `samples/Classic.Demo` application uses Crystal.Avalonia's
+`CrystalApplication`, module registration, dependency injection and automatic
+View/ViewModel wiring, with separate `Views` and `ViewModels` folders. Desktop,
+Browser, Android and iOS hosts share the same application. See
+[the sample guide](samples/Classic.Demo/README.md) and
+[verification results](tests/README.md).
 
 ## Custom Controls
 
@@ -110,14 +149,7 @@ For a classic Windows-style MessageBox:
 var result = await MessageBox.ShowDialog(parentWindow, "This is a message box", "Title", MessageBoxButtons.Ok, MessageBoxIcon.Information);
 ```
 
-To enable classic Windows sounds, add `.UseMessageBoxSounds()` in `Program.cs`:
-```csharp
-public static AppBuilder BuildAvaloniaApp()
-    => AppBuilder.Configure<App>()
-        ...
-        .UseMessageBoxSounds()
-        ...
-```
+The theme library does not play sounds by default. Desktop samples opt into an internal `UseMessageBoxSounds()` helper from `samples/Shared`; it is not a public theme API. Error/Warning use chord.wav, Information/Question use ding.wav, and other controls are silent. Browser and mobile sample audio is not implemented.
 
 ![MessageBox example](https://raw.githubusercontent.com/BAndysc/Classic.Avalonia/refs/heads/master/samples/examples/messagebox.png)
 
@@ -156,7 +188,12 @@ Use `<commonControls:ListView>` with `<commonControls:ListViewItem>` children. I
 For a classic Windows 9x-style 'About' dialog:
 ```csharp
 var bitmap = new Bitmap(AssetLoader.Open(new Uri("avares://YourAssembly/YourPathToIcon.png")));
-await AboutDialog.ShowDialog(parentWindow, "Notepad", "Copyright (C) 1985-1999", bitmap);
+await AboutDialog.ShowDialog(parentWindow, new AboutDialogOptions
+{
+    Title = "Notepad",
+    Copyright = "Copyright (C) 1985-1999",
+    Icon = bitmap
+});
 ```
 
 ![AboutDialog Example](https://raw.githubusercontent.com/BAndysc/Classic.Avalonia/refs/heads/master/samples/examples/aboutdialog.png)

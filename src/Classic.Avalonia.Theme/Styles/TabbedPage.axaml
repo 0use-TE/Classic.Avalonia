@@ -1,0 +1,29 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:common="clr-namespace:Classic.CommonControls;assembly=Classic.CommonControls.Avalonia">
+  <ControlTheme x:Key="ClassicPageTabItem" TargetType="TabItem"
+                BasedOn="{StaticResource {x:Type TabItem}}">
+    <Setter Property="HeaderTemplate">
+      <DataTemplate>
+        <StackPanel Orientation="Horizontal" Spacing="4">
+          <ContentPresenter Content="{Binding $parent[TabItem].(Page.Icon)}"
+                            ContentTemplate="{Binding $parent[TabItem].(Page.IconTemplate)}"
+                            Width="16" Height="16"
+                            IsVisible="{Binding $parent[TabItem].(Page.Icon), Converter={x:Static ObjectConverters.IsNotNull}}" />
+          <ContentPresenter Content="{Binding}" RecognizesAccessKey="True" />
+        </StackPanel>
+      </DataTemplate>
+    </Setter>
+  </ControlTheme>
+  <ControlTheme x:Key="{x:Type TabbedPage}" TargetType="TabbedPage">
+    <Setter Property="Background" Value="{DynamicResource {x:Static common:SystemColors.ControlBrushKey}}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <TabControl Name="PART_TabControl"
+                    Background="{TemplateBinding Background}"
+                    ItemContainerTheme="{StaticResource ClassicPageTabItem}"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

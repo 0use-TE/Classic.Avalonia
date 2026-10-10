@@ -35,8 +35,8 @@
             <Separator />
             <Border Height="8" />
             <Grid ColumnDefinitions="*,5,Auto" RowDefinitions="*,Auto">
-              <TextBlock Text="{CompiledBinding OperatingSystemName, StringFormat=Physical memory available to {0}:}" Grid.Column="0" Grid.Row="0" />
-              <TextBlock Text="System resources:" Grid.Column="0" Grid.Row="1" />
+              <TextBlock Text="{CompiledBinding MemoryDescription}" Grid.Column="0" Grid.Row="0" />
+              <TextBlock Text="Unused memory budget:" Grid.Column="0" Grid.Row="1" />
               <TextBlock Text="{CompiledBinding TotalMemory, StringFormat={}{0} MB}" Grid.Column="2" Grid.Row="0" />
               <TextBlock Text="{CompiledBinding FreeResources, StringFormat={}{0}% Free}" Grid.Column="2" Grid.Row="1" />
             </Grid>

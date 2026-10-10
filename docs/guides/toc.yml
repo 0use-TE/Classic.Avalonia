@@ -1,0 +1,14 @@
+- name: 项目引用与接入
+  href: getting-started.md
+- name: 配色与字体
+  href: appearance.md
+- name: 控件与交互
+  href: controls.md
+- name: Crystal 示例架构
+  href: samples.md
+- name: 平台支持与已知限制
+  href: platforms.md
+- name: NativeAOT 支持
+  href: native-aot.md
+- name: 构建与维护文档
+  href: documentation.md

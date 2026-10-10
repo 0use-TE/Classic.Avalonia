@@ -17,6 +17,13 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set => SetField(ref url, value);
     }
 
+    private string? navigationError;
+    public string? NavigationError
+    {
+        get => navigationError;
+        private set => SetField(ref navigationError, value);
+    }
+
     private bool canGoBack, canGoForward;
     public bool CanGoBack
     {
@@ -50,12 +57,12 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public bool IsSmallIcons
     {
         get => toolbarSize == ToolbarSize.Small;
-        set => ToolbarSize = ToolbarSize.Small;
+        set { if (value) ToolbarSize = ToolbarSize.Small; }
     }
     public bool IsLargeIcons
     {
         get => toolbarSize == ToolbarSize.Large;
-        set => ToolbarSize = ToolbarSize.Large;
+        set { if (value) ToolbarSize = ToolbarSize.Large; }
     }
     private ToolbarTextPlacement toolbarTextPlacement = ToolbarTextPlacement.Down;
     public ToolbarTextPlacement ToolbarTextPlacement
@@ -73,22 +80,22 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public bool IsTextDown
     {
         get => toolbarTextPlacement == ToolbarTextPlacement.Down;
-        set => ToolbarTextPlacement = ToolbarTextPlacement.Down;
+        set { if (value) ToolbarTextPlacement = ToolbarTextPlacement.Down; }
     }
     public bool IsTextRight
     {
         get => toolbarTextPlacement == ToolbarTextPlacement.Right;
-        set => ToolbarTextPlacement = ToolbarTextPlacement.Right;
+        set { if (value) ToolbarTextPlacement = ToolbarTextPlacement.Right; }
     }
     public bool IsTextSelective
     {
         get => toolbarTextPlacement == ToolbarTextPlacement.RightPreferNoText;
-        set => ToolbarTextPlacement = ToolbarTextPlacement.RightPreferNoText;
+        set { if (value) ToolbarTextPlacement = ToolbarTextPlacement.RightPreferNoText; }
     }
     public bool IsTextNo
     {
         get => toolbarTextPlacement == ToolbarTextPlacement.NoText;
-        set => ToolbarTextPlacement = ToolbarTextPlacement.NoText;
+        set { if (value) ToolbarTextPlacement = ToolbarTextPlacement.NoText; }
     }
 
     private PanelType openedPanel;
@@ -142,12 +149,27 @@ public class MainWindowViewModel : INotifyPropertyChanged
         LoadLink(url);
     }
 
-    public void LoadLink(string link)
+    public void LoadLink(string? link)
     {
-        if (!link.StartsWith("http://") && !link.StartsWith("file://") && !link.StartsWith("https://"))
+        link = link?.Trim();
+        if (string.IsNullOrEmpty(link))
+        {
+            NavigationError = "Enter a valid web or file address.";
+            return;
+        }
+
+        if (!link.Contains("://", StringComparison.Ordinal))
             link = "https://" + link;
-        LoadUriRequest?.Invoke(new Uri(link));
-        Url = link;
+        if (!Uri.TryCreate(link, UriKind.Absolute, out var uri) ||
+            (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps && uri.Scheme != Uri.UriSchemeFile))
+        {
+            NavigationError = "Enter a valid web or file address.";
+            return;
+        }
+
+        NavigationError = null;
+        Url = uri.AbsoluteUri;
+        LoadUriRequest?.Invoke(uri);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

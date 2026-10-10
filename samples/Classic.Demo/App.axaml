@@ -6,9 +6,7 @@
 
     <Application.Styles>
         <classic:ClassicTheme />
-        <StyleInclude Source="avares://Classic.Avalonia.Theme.DataGrid/Classic.axaml"/>
         <StyleInclude Source="avares://Classic.Avalonia.Theme.ColorPicker/Classic.axaml" />
-
         <StyleInclude Source="ColorBox.axaml"/>
     </Application.Styles>
 </Application>

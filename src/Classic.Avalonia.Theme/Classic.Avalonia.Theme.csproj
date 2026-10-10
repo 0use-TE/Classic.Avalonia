@@ -1,7 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
         <Nullable>enable</Nullable>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <LangVersion>latest</LangVersion>
@@ -16,7 +15,7 @@
         <PackageId>Classic.Avalonia.Theme</PackageId>
         <Product>Classic.Avalonia.Theme</Product>
         <Description>Classic Windows-like theme for Avalonia</Description>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageLicenseFile>licenses/Font-notices.md</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/BAndysc/Classic.Avalonia</PackageProjectUrl>
         <PackageIcon>icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/BAndysc/Classic.Avalonia</RepositoryUrl>
@@ -51,5 +50,9 @@
     <ItemGroup>
       <None Remove="Icons\*.png" />
       <AvaloniaResource Include="Icons\*.png" />
+      <AvaloniaResource Include="Fonts\*.ttf" />
+      <None Update="Fonts\OFL.txt" Pack="true" PackagePath="licenses/LiberationSans-OFL.txt" />
+      <None Update="Fonts\README.md" Pack="true" PackagePath="licenses/Font-notices.md" />
+      <None Include="..\..\LICENSE" Pack="true" PackagePath="licenses/LICENSE" />
     </ItemGroup>
 </Project>

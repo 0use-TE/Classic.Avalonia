@@ -50,7 +50,7 @@
         <DockPanel Margin="6,7">
 
             <avaloniaExplorer:UniformStack Margin="0,5,0,0" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Spacing="7">
-                <Button IsDefault="True" MinWidth="74">OK</Button>
+                <Button IsDefault="True" MinWidth="74" Click="AcceptOptions">OK</Button>
                 <Button IsCancel="True">Cancel</Button>
                 <Button>_Apply</Button>
             </avaloniaExplorer:UniformStack>

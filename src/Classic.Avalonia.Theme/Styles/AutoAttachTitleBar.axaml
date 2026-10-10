@@ -18,6 +18,7 @@
   </LinearGradientBrush>
 
   <ControlTheme x:Key="{x:Type utils:AutoAttachTitleBar}" TargetType="utils:AutoAttachTitleBar">
+    <Setter Property="utils:FontUtils.FontAliasing" Value="{DynamicResource {x:Static common:SystemParameters.FontAliasingKey}}" />
     <Setter Property="Height" Value="{DynamicResource {x:Static common:SystemParameters.WindowCaptionHeightKey}}" />
     <Setter Property="Template">
       <ControlTemplate>
@@ -25,19 +26,19 @@
           <Border x:Name="PART_GradientBar" IsHitTestVisible="False" />
 
           <DockPanel Margin="2,0,2,0">
-            <utils:CaptionButtonsEx Name="PART_CaptionButtons" DockPanel.Dock="Right" />
+            <utils:CaptionButtonsEx IsVisible="{TemplateBinding ShowCaptionButtons}" WindowDecorationProperties.ElementRole="DecorationsElement" Name="PART_CaptionButtons" DockPanel.Dock="Right" />
 
             <utils:WindowIconRenderer
               RenderOptions.BitmapInterpolationMode="None"
               IsHitTestVisible="False"
-              IsVisible="{Binding $parent[Window].Icon, Converter={x:Static ObjectConverters.IsNotNull}}"
-              Source="{Binding $parent[Window].Icon}"
-              SourceOverride="{Binding (ClassicWindow.SmallIcon), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, FallbackValue={x:Null}}"
+              IsVisible="{Binding CaptionIcon, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"
+              Source="{TemplateBinding CaptionIcon}"
+              SourceOverride="{TemplateBinding CaptionSmallIcon}"
               Width="16" Height="16" />
 
-            <TextBlock Text="{Binding $parent[Window].Title}"
+            <TextBlock Text="{TemplateBinding CaptionTitle}"
                        VerticalAlignment="Center"
-                       HorizontalAlignment="Stretch"
+                       HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis"
                        FontFamily="{DynamicResource {x:Static common:NonClientMetrics.CaptionFontKey}}"
                        FontSize="{DynamicResource {x:Static common:NonClientMetrics.CaptionFontSizeKey}}"
                        IsHitTestVisible="False"
@@ -54,6 +55,12 @@
 
     <Style Selector="^:active /template/ Border#PART_GradientBar">
       <Setter Property="Background" Value="{StaticResource ActiveTitleBarBrush}" />
+    </Style>
+    <Style Selector="^[ShowCaptionButtons=False] /template/ TextBlock">
+      <Setter Property="Margin" Value="0,0,54,0" />
+    </Style>
+    <Style Selector="^:not(:active) /template/ TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource {x:Static common:SystemColors.InactiveCaptionTextBrushKey}}" />
     </Style>
   </ControlTheme>
 

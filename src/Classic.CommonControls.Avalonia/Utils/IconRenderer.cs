@@ -217,6 +217,11 @@ public class IconRenderer : Control
 
                 canvas.Restore();
             }
+            else
+            {
+                // Keep icons visible when the host uses another Avalonia renderer.
+                context.DrawBitmap(bitmap, new Rect(bitmap.Size), Bounds);
+            }
         }
     }
 

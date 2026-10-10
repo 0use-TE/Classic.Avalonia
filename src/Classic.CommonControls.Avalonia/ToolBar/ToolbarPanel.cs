@@ -1,4 +1,3 @@
-using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -40,19 +39,12 @@ public class ToolbarPanel : Panel
         set => SetValue(SpacingProperty, value);
     }
 
-    delegate void InvalidateStylesType(StyledElement element, bool recurse);
-    private static InvalidateStylesType? invalidateStyle;
 
     static ToolbarPanel()
     {
-        var invalidateStyleMethod = typeof(StyledElement).GetMethod("InvalidateStyles", BindingFlags.Instance | BindingFlags.NonPublic);
-        if (invalidateStyleMethod != null)
-            invalidateStyle = (InvalidateStylesType)Delegate.CreateDelegate(typeof(InvalidateStylesType), invalidateStyleMethod);
-        else
-            throw new Exception("Failed to find InvalidateStyles method (probably due to Avalonia version update)!!!");
 
         OutOfBoundsPanelProperty.Changed.AddClassHandler<ToolbarPanel>((panel, e) => panel.OnChangedPanel(e));
-        AffectsMeasure<ToolbarPanel>(SpacingProperty);
+        AffectsMeasure<ToolbarPanel>(SpacingProperty, WrapOnOverflowProperty);
         AffectsArrange<ToolbarPanel>(SpacingProperty);
     }
 
@@ -100,15 +92,10 @@ public class ToolbarPanel : Panel
     {
         if (WrapOnOverflow)
             return MeasureWithWrapOverride(availableSize);
-        var wrap = WrapOnOverflow;
         var spacing = Spacing;
-        double desiredWidth = 0;
-        double desiredHeight = 0;
         double maxDesiredWidth = 0;
         double maxDesiredHeight = 0;
-        int rows = 1;
         var children = Children;
-        bool any = false;
 
         for (int i = 0, count = children.Count; i < count; ++i)
         {
@@ -126,38 +113,30 @@ public class ToolbarPanel : Panel
             if (child is ToolbarSpacer)
                 continue;
 
-            any = true;
             child.Measure(availableSize.WithWidth(double.PositiveInfinity));
-            desiredWidth += child.DesiredSize.Width + spacing;
-            desiredHeight = Math.Max(desiredHeight, child.DesiredSize.Height);
-            if (wrap && desiredWidth > availableSize.Width)
-            {
-                maxDesiredWidth = Math.Max(maxDesiredWidth, desiredWidth - spacing);
-                maxDesiredHeight = Math.Max(maxDesiredHeight, desiredHeight);
-                desiredWidth = 0;
-                desiredHeight = 0;
-                rows++;
-            }
-        }
-
-        if (desiredWidth > 0)
-        {
-            maxDesiredWidth = Math.Max(maxDesiredWidth, desiredWidth);
-            maxDesiredHeight = Math.Max(maxDesiredHeight, desiredHeight);
+            maxDesiredWidth += child.DesiredSize.Width + spacing;
+            maxDesiredHeight = Math.Max(maxDesiredHeight, child.DesiredSize.Height);
         }
 
         foreach (var child in overflowControls)
         {
+            child.Measure(availableSize.WithWidth(double.PositiveInfinity));
             maxDesiredWidth += child.DesiredSize.Width + spacing;
+            maxDesiredHeight = Math.Max(maxDesiredHeight, child.DesiredSize.Height);
         }
 
         if (OutOfBoundsPanel != null)
         {
-            OutOfBoundsPanel.Measure(availableSize.WithWidth(double.PositiveInfinity));
-            maxDesiredWidth += OutOfBoundsPanel.DesiredSize.Width + spacing;
+            // The flyout owns this panel's measure pass. Measuring it here with a
+            // different constraint repeatedly invalidates the popup's layout.
+            foreach (var child in OutOfBoundsPanel.Children.Where(child => child.IsVisible))
+            {
+                maxDesiredWidth += child.DesiredSize.Width + spacing;
+                maxDesiredHeight = Math.Max(maxDesiredHeight, child.DesiredSize.Height);
+            }
         }
 
-        return new Size(any ? maxDesiredWidth : 0, maxDesiredHeight * rows);
+        return new Size(Math.Max(0, maxDesiredWidth - spacing), maxDesiredHeight);
     }
 
     private Size MeasureWithWrapOverride(Size availableSize)
@@ -241,7 +220,12 @@ public class ToolbarPanel : Panel
             totalDesiredWidth -= spacing;
 
         double leftSpace = finalSize.Width - totalDesiredWidth;
-        double spacerWidth = spacerCount == 0 ? 0 : (leftSpace > 0 ? leftSpace / spacerCount : 0.0);
+        var overflowWidth = overflowControls.Concat(OutOfBoundsPanel?.Children.AsEnumerable() ?? Enumerable.Empty<Control>())
+            .Where(child => child.IsVisible && child is not ToolbarSpacer).Sum(child => child.DesiredSize.Width + spacing);
+        var stretchCount = children.Count(child => child.IsVisible && child is not ToolbarSpacer && child.HorizontalAlignment == HorizontalAlignment.Stretch);
+        var extraWidth = Math.Max(0, leftSpace - overflowWidth);
+        var share = spacerCount + stretchCount == 0 ? 0 : extraWidth / (spacerCount + stretchCount);
+        double spacerWidth = share;
 
         for (int i = 0, count = children.Count; i < count; ++i)
         {
@@ -254,16 +238,16 @@ public class ToolbarPanel : Panel
 
             rcChild = rcChild.WithX(rcChild.X + previousChildSize);
             rcChild = rcChild.WithHeight(Math.Max(finalSize.Height, child.DesiredSize.Height));
-            if (child.HorizontalAlignment == HorizontalAlignment.Stretch)
-            {
-                previousChildSize = child.DesiredSize.Width + Math.Max(0, leftSpace);
-                rcChild = rcChild.WithWidth(previousChildSize);
-                previousChildSize += spacing;
-            }
-            else if (child is ToolbarSpacer)
+            if (child is ToolbarSpacer)
             {
                 previousChildSize = spacerWidth;
                 rcChild = rcChild.WithWidth(previousChildSize);
+            }
+            else if (child.HorizontalAlignment == HorizontalAlignment.Stretch)
+            {
+                previousChildSize = child.DesiredSize.Width + share;
+                rcChild = rcChild.WithWidth(previousChildSize);
+                previousChildSize += spacing;
             }
             else
             {
@@ -313,19 +297,13 @@ public class ToolbarPanel : Panel
 
                 if (child != null)
                 {
-                    if (leftSpace > child.Bounds.Width + spacing)
+                    if (leftSpace >= child.DesiredSize.Width + spacing)
                     {
                         if (overflowControls.Count > 0)
                             overflowControls.RemoveAt(overflowControls.Count - 1);
                         else
                             OutOfBoundsPanel.Children.RemoveAt(0);
                         Children.Add(child);
-                        // it really sucks I have to call InvalidateStyles via reflection, but without this
-                        // buttons style bug in Solution Explorer in the following case
-                        // shrink the toolbar to overflow buttons
-                        // open the flyout
-                        // expand the toolbar to show all buttons - now the buttons are not styled
-                        invalidateStyle?.Invoke(child, true);
                         child.ApplyStyling();
                     }
                 }

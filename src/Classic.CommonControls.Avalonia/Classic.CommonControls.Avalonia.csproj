@@ -1,7 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <WarningsAsErrors>nullable</WarningsAsErrors>
@@ -45,9 +44,4 @@
         </None>
     </ItemGroup>
 
-    <ItemGroup>
-      <AvaloniaResource Include="Audio\chimes.wav" />
-      <AvaloniaResource Include="Audio\chord.wav" />
-      <AvaloniaResource Include="Audio\ding.wav" />
-    </ItemGroup>
 </Project>

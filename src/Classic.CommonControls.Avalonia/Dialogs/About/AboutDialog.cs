@@ -12,6 +12,7 @@ public class AboutDialogOptions
     public string? SubTitle { get; set; } = null;
     public string Copyright { get; set; } = "";
     public IImage? Icon { get; set; }
+    public AboutSystemInformation? SystemInformation { get; set; }
 }
 
 public class AboutDialog : TemplatedControl

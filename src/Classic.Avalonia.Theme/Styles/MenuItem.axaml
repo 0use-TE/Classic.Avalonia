@@ -13,7 +13,7 @@
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Padding" Value="6 0" />
-    <Setter Property="Height" Value="19" />
+    <Setter Property="MinHeight" Value="19" />
     <Setter Property="Template">
       <ControlTemplate>
         <Border Name="root"
@@ -78,6 +78,7 @@
                                             Mode=TwoWay}"
                    VerticalOffset="-3"
                    HorizontalOffset="-3"
+                   PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                    Placement="RightEdgeAlignedTop">
               <classic:ClassicBorderDecorator BorderStyle="AltRaised"
                                               Background="{DynamicResource {x:Static common:SystemColors.ControlBrushKey}}"
@@ -106,6 +107,7 @@
     </Style>
 
     <Style Selector="^:separator">
+      <Setter Property="MinHeight" Value="0" />
       <Setter Property="Height" Value="10" />
       <Setter Property="Template">
         <ControlTemplate>

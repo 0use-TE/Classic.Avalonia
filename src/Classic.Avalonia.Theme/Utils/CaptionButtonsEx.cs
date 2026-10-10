@@ -1,4 +1,3 @@
-using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -26,12 +25,6 @@ public class CaptionButtonsEx : TemplatedControl
     private const string pseudoClassDialog = ":dialog";
     private const string pseudoClassCantResize = ":cantresize";
     
-    private static FieldInfo? showingAsDialogField;
-
-    static CaptionButtonsEx()
-    {
-        showingAsDialogField = typeof(Window).GetField("_showingAsDialog", BindingFlags.Instance | BindingFlags.NonPublic);
-    }
     
     private CompositeDisposable? _disposables;
 
@@ -80,10 +73,7 @@ public class CaptionButtonsEx : TemplatedControl
 
         _hostWindow = hostWindow;
 
-        if (showingAsDialogField != null)
-        {
-            PseudoClasses.Set(pseudoClassDialog, showingAsDialogField.GetValue(hostWindow) is true);
-        }
+        PseudoClasses.Set(pseudoClassDialog, hostWindow.IsDialog);
 
         _disposables = new CompositeDisposable()
         {

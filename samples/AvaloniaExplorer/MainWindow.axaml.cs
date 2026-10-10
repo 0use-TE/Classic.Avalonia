@@ -32,7 +32,8 @@ public partial class MainWindow : ClassicWindow
         finishLoadingBar = null;
         UpdateBackForward();
 
-        vm.Url = e.Request?.ToString();
+        if (e.Request is { } request)
+            vm.Url = request.ToString();
     }
 
     private void NavigationCompleted(object? sender, WebViewNavigationCompletedEventArgs e)

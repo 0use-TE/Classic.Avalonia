@@ -400,3 +400,10 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 .idea
+
+# DocFX generated metadata and site
+/docs/api/
+/docs/_site/
+
+# Shared, credential-free NativeAOT publish profile
+!samples/Notepad/Properties/PublishProfiles/WinX64Aot.pubxml

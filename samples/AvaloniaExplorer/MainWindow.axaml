@@ -255,7 +255,10 @@
         </ClassicBorderDecorator>
         <commonControls:StatusBar DockPanel.Dock="Bottom" Margin="0,2,0,0">
             <commonControls:StatusBarItem commonControls:StatusBar.Size="*">
-                <Image Source="Icons/page16.gif" Width="16" Height="16" HorizontalAlignment="Left" Margin="0,-2,0,0" />
+                <DockPanel>
+                    <Image DockPanel.Dock="Left" Source="Icons/page16.gif" Width="16" Height="16" Margin="0,-2,4,0" />
+                    <TextBlock Text="{CompiledBinding NavigationError}" TextTrimming="CharacterEllipsis" />
+                </DockPanel>
             </commonControls:StatusBarItem>
             <commonControls:StatusBarItem commonControls:StatusBar.Size="100" Padding="0">
                 <ProgressBar Value="{CompiledBinding Progress}"

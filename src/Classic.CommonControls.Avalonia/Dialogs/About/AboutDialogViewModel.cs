@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Avalonia.Media;
 
 namespace Classic.CommonControls.Dialogs;
@@ -44,19 +43,19 @@ public class AboutDialogViewModel : INotifyPropertyChanged
     public int FreeResources { get; }
 
     public int TotalMemory { get; }
+    public string MemoryDescription { get; }
 
     public event Action? CloseRequested;
 
     public AboutDialogViewModel(AboutDialogOptions options)
     {
-        OperatingSystemName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows" :
-            (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "Linux" :
-            (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "macOS" : "Other"));
-        OperatingSystem = $"{OperatingSystemName} {Environment.OSVersion.Version.Major}";
-        Username = Environment.UserName;
-        var memoryMetrics = new MemoryMetricsClient().GetMetrics();
-        FreeResources = (int)(memoryMetrics.Free / memoryMetrics.Total * 100);
-        TotalMemory = (int)(memoryMetrics.Total / 1024 / 1024);
+        var info = options.SystemInformation ?? AboutSystemInformation.ForCurrentRuntime();
+        OperatingSystemName = info.OperatingSystem;
+        OperatingSystem = info.OperatingSystem;
+        Username = info.Username;
+        MemoryDescription = info.MemoryDescription;
+        FreeResources = info.TotalMemoryBytes > 0 ? (int)Math.Clamp(100.0 * info.AvailableMemoryBytes / info.TotalMemoryBytes, 0, 100) : 0;
+        TotalMemory = (int)Math.Clamp(info.TotalMemoryBytes / 1024 / 1024, 0, int.MaxValue);
 
         Title = options.Title;
         SubTitle = options.SubTitle;

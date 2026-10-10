@@ -1,0 +1,77 @@
+name: Documentation and Preview
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "docs/**"
+      - "src/**"
+      - "samples/Classic.Demo*/**"
+      - "samples/Shared/**"
+      - "scripts/Prepare-GitHubPages.ps1"
+      - ".config/dotnet-tools.json"
+      - "Directory.Build.props"
+      - "global.json"
+      - ".github/workflows/docs.yml"
+      - "icon.png"
+  pull_request:
+    paths:
+      - "docs/**"
+      - "src/**"
+      - "samples/Classic.Demo*/**"
+      - "samples/Shared/**"
+      - "scripts/Prepare-GitHubPages.ps1"
+      - ".config/dotnet-tools.json"
+      - "Directory.Build.props"
+      - "global.json"
+      - ".github/workflows/docs.yml"
+      - "icon.png"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+      - run: dotnet tool restore
+      - run: dotnet workload install wasm-tools
+      - name: Publish browser preview
+        run: dotnet publish samples/Classic.Demo.Browser/Classic.Demo.Browser.csproj -c Release -o artifacts/pages/browser
+      - run: dotnet docfx docs/docfx.json --warningsAsErrors
+      - name: Assemble documentation and preview
+        shell: pwsh
+        run: ./scripts/Prepare-GitHubPages.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: documentation-and-preview
+          path: artifacts/pages/site
+          if-no-files-found: error
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+        with:
+          path: artifacts/pages/site
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - uses: actions/deploy-pages@v4
+        id: deployment

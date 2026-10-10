@@ -1,4 +1,6 @@
-﻿using Avalonia;
+using Classic.Samples;
+using Classic.Avalonia.Theme;
+using Avalonia;
 using System;
 using Classic.CommonControls;
 
@@ -17,6 +19,11 @@ class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .With(new Win32PlatformOptions
+            {
+                CompositionMode = [Win32CompositionMode.DirectComposition, Win32CompositionMode.RedirectionSurface]
+            })
+            .WithClassicFont()
             .UseMessageBoxSounds()
             .LogToTrace();
 }

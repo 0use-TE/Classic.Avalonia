@@ -1,0 +1,486 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:classic="clr-namespace:Classic.Avalonia.Theme;assembly=Classic.Avalonia.Theme" xmlns:demo="clr-namespace:Classic.Demo" xmlns:vm="using:Classic.Demo.ViewModels" xmlns:views="using:Classic.Demo.Views" xmlns:crystal="using:Crystal.Avalonia" xmlns:common="clr-namespace:Classic.CommonControls;assembly=Classic.CommonControls.Avalonia" xmlns:controls="clr-namespace:Classic.Avalonia.Theme.Controls;assembly=Classic.Avalonia.Theme" xmlns:commonControls="clr-namespace:Classic.CommonControls;assembly=Classic.CommonControls.Avalonia" xmlns:dialogs="clr-namespace:Classic.CommonControls.Dialogs;assembly=Classic.CommonControls.Avalonia" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600" x:Class="Classic.Demo.Views.MainView" x:DataType="vm:MainViewModel" crystal:ViewModelLocator.AutoWireViewModel="True">
+  <UserControl.Styles>
+    <Style Selector="TabControl#DemoCategories.compact /template/ ItemsPresenter#PART_ItemsPresenter">
+      <Setter Property="Width" Value="0" />
+      <Setter Property="Height" Value="0" />
+      <Setter Property="Opacity" Value="0" />
+      <Setter Property="IsHitTestVisible" Value="False" />
+    </Style>
+  </UserControl.Styles>
+  <Grid Name="ViewRoot"><DockPanel Name="MainContent">
+    <ComboBox Name="CompactNavigation" DockPanel.Dock="Top" IsVisible="False" HorizontalAlignment="Stretch" Margin="4" SelectedIndex="{Binding SelectedCategoryIndex, Mode=TwoWay}" />
+    <Panel DockPanel.Dock="Top">
+      <Menu>
+        <MenuItem Header="File">
+          <MenuItem Header="New">
+            <MenuItem.Icon>
+              <Image Source="avares://Classic.Demo/Icons/newfile.png" />
+            </MenuItem.Icon>
+            <MenuItem Header="Blank page" />
+            <MenuItem Header="From template" IsEnabled="False" />
+            <MenuItem Header="From clipboard" />
+          </MenuItem>
+          <MenuItem Header="Open">
+            <MenuItem.Icon>
+              <Image Source="avares://Classic.Demo/Icons/open.png" />
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Save">
+            <MenuItem.Icon>
+              <Image Source="avares://Classic.Demo/Icons/save.png" />
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="-" />
+          <MenuItem Header="Exit" />
+        </MenuItem>
+        <MenuItem Header="Edit">
+          <MenuItem Header="Cut">
+            <MenuItem.Icon>
+              <Image Source="avares://Classic.Demo/Icons/cut.png" />
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Copy">
+            <MenuItem.Icon>
+              <Image Source="avares://Classic.Demo/Icons/copy.png" />
+            </MenuItem.Icon>
+          </MenuItem>
+          <Separator />
+          <MenuItem Header="Paste">
+            <MenuItem.Icon>
+              <Image Source="avares://Classic.Demo/Icons/paste.png" />
+            </MenuItem.Icon>
+          </MenuItem>
+        </MenuItem>
+        <MenuItem IsEnabled="False" Header="Disabled menu" />
+        <MenuItem Header="Help">
+          <MenuItem Header="About" />
+        </MenuItem>
+      </Menu>
+      <ComboBox Height="18" Padding="0" HorizontalAlignment="Right" ItemsSource="{x:Static classic:ClassicTheme.AllVariants}" SelectedIndex="0" SelectionChanged="OnThemeChanged" />
+    </Panel>
+    <Separator DockPanel.Dock="Top" />
+    <commonControls:ToolBar DockPanel.Dock="Top" Size="Small" TextPlacement="Right">
+      <commonControls:RebarHandle />
+      <commonControls:ToolBarButton SmallIcon="avares://Classic.Demo/Icons/newfile.png" ToolTip.Tip="New file" Text="New file" />
+      <commonControls:ToolBarButton SmallIcon="avares://Classic.Demo/Icons/open.png" ToolTip.Tip="Open" />
+      <commonControls:ToolBarButton SmallIcon="avares://Classic.Demo/Icons/save.png" ToolTip.Tip="Save" Text="Save" />
+      <Separator />
+      <commonControls:ToolBarButton SmallIcon="avares://Classic.Demo/Icons/cut.png" ToolTip.Tip="Cut" Text="Cut" />
+      <commonControls:ToolBarButton SmallIcon="avares://Classic.Demo/Icons/copy.png" ToolTip.Tip="Copy" Text="Copy" />
+      <commonControls:ToolBarButton SmallIcon="avares://Classic.Demo/Icons/paste.png" ToolTip.Tip="Paste" Text="Paste" />
+      <Separator />
+      <ComboBox SelectedIndex="0">
+        <ComboBoxItem>Times New Roman</ComboBoxItem>
+        <ComboBoxItem>Arial</ComboBoxItem>
+        <ComboBoxItem>Tahoma</ComboBoxItem>
+      </ComboBox>
+      <ComboBox SelectedIndex="0">
+        <ComboBoxItem>10</ComboBoxItem>
+        <ComboBoxItem>14</ComboBoxItem>
+        <ComboBoxItem>18</ComboBoxItem>
+      </ComboBox>
+    </commonControls:ToolBar>
+    <Separator DockPanel.Dock="Top" />
+    <commonControls:ToolBar DockPanel.Dock="Top" Size="Large" TextPlacement="Down" GrayscaleIcons="True">
+      <commonControls:RebarHandle />
+      <commonControls:ToolBarButton LargeIcon="avares://Classic.Demo/Icons/back24.gif" Text="Back" PreferText="True" />
+      <commonControls:ToolBarButton LargeIcon="avares://Classic.Demo/Icons/forward24.gif" Text="Forward" IsEnabled="False" />
+      <commonControls:ToolBarButton LargeIcon="avares://Classic.Demo/Icons/up24.gif" Text="Up" />
+      <Separator />
+      <commonControls:ToolBarButton LargeIcon="avares://Classic.Demo/Icons/cut24.gif" Text="Cut" />
+      <commonControls:ToolBarButton LargeIcon="avares://Classic.Demo/Icons/copy24.gif" Text="Copy" />
+      <commonControls:ToolBarButton LargeIcon="avares://Classic.Demo/Icons/paste24.gif" Text="Paste" />
+      <Separator />
+      <commonControls:ToolBarButton LargeIcon="avares://Classic.Demo/Icons/undo24.gif" Text="Undo" />
+      <Separator />
+      <commonControls:ToolBarButton LargeIcon="avares://Classic.Demo/Icons/delete24.gif" Text="Delete" />
+      <commonControls:ToolBarButton LargeIcon="avares://Classic.Demo/Icons/properties24.gif" Text="Properties" />
+      <Separator />
+      <commonControls:ToolBarButton LargeIcon="avares://Classic.Demo/Icons/views24.gif" Text="Views" />
+      <!-- <commonControls:ToolBar.Styles> -->
+      <!--   <Style Selector="Button"> -->
+      <!--     <Setter Property="Padding" Value="15,0" /> -->
+      <!--   </Style> -->
+      <!--   <Style Selector="Button commonControls|ToolBarIcon"> -->
+      <!--     <Setter Property="IconStyle" Value="Grayscale" /> -->
+      <!--   </Style> -->
+      <!--   <Style Selector="Button:pointerover commonControls|ToolBarIcon"> -->
+      <!--     <Setter Property="IconStyle" Value="Normal" /> -->
+      <!--   </Style> -->
+      <!--   <Style Selector="Button:disabled commonControls|ToolBarIcon"> -->
+      <!--     <Setter Property="IconStyle" Value="Disabled" /> -->
+      <!--   </Style> -->
+      <!-- </commonControls:ToolBar.Styles> -->
+    </commonControls:ToolBar>
+    <Separator DockPanel.Dock="Top" />
+    <TabControl x:Name="DemoCategories" SelectedIndex="{Binding SelectedCategoryIndex, Mode=TwoWay}" TabStripPlacement="Left">
+      <TabItem Header="Overview">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+          <Grid ColumnDefinitions="*,5,*" Margin="5,0">
+            <StackPanel Orientation="Vertical" Grid.Column="0" Spacing="5">
+              <HeaderedContentControl Header="Buttons">
+                <StackPanel Orientation="Vertical" Spacing="5">
+                  <Button>Plain button</Button>
+                  <Button IsEnabled="False">Disabled button</Button>
+                  <ToggleButton IsChecked="True">Toggle button</ToggleButton>
+                  <SplitButton Content="Split Button">
+                    <SplitButton.Flyout>
+                      <MenuFlyout>
+                        <MenuItem Header="Bold" />
+                        <MenuItem Header="Italic" />
+                        <MenuItem Header="Underline" />
+                      </MenuFlyout>
+                    </SplitButton.Flyout>
+                  </SplitButton>
+                  <ColorPicker HorizontalAlignment="Stretch" />
+                </StackPanel>
+              </HeaderedContentControl>
+              <HeaderedContentControl Header="Options">
+                <Grid ColumnDefinitions="*,5,*">
+                  <StackPanel Orientation="Vertical" Spacing="5">
+                    <CheckBox>Checkbox</CheckBox>
+                    <CheckBox IsChecked="True">Checked checkbox</CheckBox>
+                    <CheckBox IsEnabled="False" IsThreeState="True" IsChecked="{x:Null}">Disabled checkbox</CheckBox>
+                  </StackPanel>
+                  <StackPanel Orientation="Vertical" Spacing="5" Grid.Column="2">
+                    <RadioButton>Radio button</RadioButton>
+                    <RadioButton IsChecked="True">Checked radio button</RadioButton>
+                    <RadioButton IsEnabled="False">Disabled radio</RadioButton>
+                  </StackPanel>
+                </Grid>
+              </HeaderedContentControl>
+              <HeaderedContentControl Header="Lists">
+                <Grid ColumnDefinitions="*,5,*">
+                  <ListBox MaxHeight="100">
+                    <ListBoxItem>Item 1</ListBoxItem>
+                    <ListBoxItem>Item 2</ListBoxItem>
+                    <ListBoxItem>Item 3</ListBoxItem>
+                    <ListBoxItem>Item 4</ListBoxItem>
+                    <ListBoxItem>Item 5</ListBoxItem>
+                    <ListBoxItem>Item 6</ListBoxItem>
+                    <ListBoxItem>Item 7</ListBoxItem>
+                    <ListBoxItem>Item 8</ListBoxItem>
+                    <ListBoxItem>Item 9</ListBoxItem>
+                    <ListBoxItem>Item 10</ListBoxItem>
+                  </ListBox>
+                  <TreeView Grid.Column="2">
+                    <TreeViewItem Header="Root" IsExpanded="True">
+                      <TreeViewItem Header="Item 1" />
+                      <TreeViewItem Header="Item 2" />
+                      <TreeViewItem Header="Item 3">
+                        <TreeViewItem Header="More items" />
+                      </TreeViewItem>
+                      <TreeViewItem Header="Item 4" />
+                    </TreeViewItem>
+                  </TreeView>
+                </Grid>
+              </HeaderedContentControl>
+              <HeaderedContentControl Header="Progress">
+                <ProgressBar Value="50" />
+              </HeaderedContentControl>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Grid.Column="2" Spacing="5">
+              <HeaderedContentControl Header="Input">
+                <DockPanel>
+                  <Slider DockPanel.Dock="Right" Orientation="Vertical" TickPlacement="BottomRight" TickFrequency="1" Minimum="0" Value="10" Maximum="20" />
+                  <StackPanel Orientation="Vertical" Spacing="5">
+                    <TextBox Text="Simple textbox" />
+                    <TextBox Text="Disabled textbox" IsEnabled="False" />
+                    <ComboBox ItemsSource="abcdefgh" SelectedIndex="0" />
+                    <ComboBox ItemsSource="abcdefgh" SelectedIndex="1" IsEnabled="False" />
+                    <Calendar />
+                    <Label>Sliders:</Label>
+                    <Slider />
+                    <Slider TickPlacement="BottomRight" TickFrequency="1" Minimum="0" Maximum="20" />
+                  </StackPanel>
+                </DockPanel>
+              </HeaderedContentControl>
+            </StackPanel>
+          </Grid>
+        </ScrollViewer>
+      </TabItem>
+      <TabItem Header="Buttons">
+        <StackPanel Orientation="Vertical">
+          <HeaderedContentControl Header="Buttons">
+            <StackPanel Orientation="Vertical" Spacing="5">
+              <Button x:Name="CommandDemoButton" crystal:EventToCommand.RoutedEvent="{x:Static Button.ClickEvent}"
+                      crystal:EventToCommand.Command="{Binding CountClickCommand}">Click me!</Button>
+              <TextBlock x:Name="CommandClickCount" Text="{Binding ClickCount, StringFormat='Clicks: {0}'}" />
+              <ToggleButton>Toggle me</ToggleButton>
+              <Button IsEnabled="False">Disabled</Button>
+              <Button ToolTip.Tip="This is a classic tooltip">Hover me for a tooltip</Button>
+              <ButtonSpinner x:Name="CommandDemoSpinner" Content="{Binding SpinnerText}"
+                             crystal:EventToCommand.RoutedEvent="{x:Static Spinner.SpinEvent}"
+                             crystal:EventToCommand.Command="{Binding SpinCommand}"
+                             crystal:EventToCommand.PassEventArgs="True" />
+            </StackPanel>
+          </HeaderedContentControl>
+          <Grid ColumnDefinitions="*,*">
+            <controls:GroupBox Header="Checkboxes">
+              <StackPanel Orientation="Vertical" Spacing="5">
+                <CheckBox>Check me</CheckBox>
+                <CheckBox IsChecked="True">Don't check me</CheckBox>
+                <CheckBox IsThreeState="True" IsChecked="{x:Null}">I don't know who am I?</CheckBox>
+                <CheckBox IsChecked="True" IsEnabled="False">Checked and disabled</CheckBox>
+                <CheckBox IsChecked="False" IsEnabled="False">Disabled</CheckBox>
+              </StackPanel>
+            </controls:GroupBox>
+            <controls:GroupBox Grid.Column="1" Header="Radio box">
+              <UniformGrid Columns="2">
+                <RadioButton Margin="0,4,8,4">Option A</RadioButton>
+                <RadioButton Margin="0,4,8,4">Option B</RadioButton>
+                <RadioButton Margin="0,4,8,4" IsEnabled="False">Option C</RadioButton>
+                <RadioButton Margin="0,4,8,4" IsEnabled="False" IsChecked="True">Option D</RadioButton>
+              </UniformGrid>
+            </controls:GroupBox>
+          </Grid>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Input">
+        <StackPanel Orientation="Vertical" Spacing="5">
+          <TextBox Text="Lorem ipsum dolor sit amet.." />
+          <ComboBox ItemsSource="abcdefgh" SelectedIndex="1" />
+          <ComboBox ItemsSource="abcdefgh" IsEnabled="False" SelectedIndex="0" />
+          <AutoCompleteBox ItemsSource="{Binding People}" ValueMemberBinding="{Binding FirstName}">
+            <AutoCompleteBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:PersonViewModel">
+                <TextBlock Text="{Binding FirstName}" />
+              </DataTemplate>
+            </AutoCompleteBox.ItemTemplate>
+          </AutoCompleteBox>
+          <GroupBox Header="Placeholders and floating labels" Margin="8">
+            <StackPanel Spacing="8">
+              <TextBox PlaceholderText="Enter text" UseFloatingPlaceholder="True" />
+              <NumericUpDown PlaceholderText="Enter a number" />
+            </StackPanel>
+          </GroupBox>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Date / time">
+        <StackPanel Orientation="Vertical">
+          <TextBlock Text="Calendar: " />
+          <Calendar SelectedDate="{Binding CalendarDate, Mode=TwoWay}" />
+          <TextBlock Text="Date picker: " />
+          <CalendarDatePicker SelectedDate="{Binding CalendarDate, Mode=TwoWay}" />
+          <TextBlock Text="Date picker: " />
+          <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay}" />
+          <TextBlock Text="Time picker: " />
+          <TimePicker SelectedTime="{Binding SelectedTime, Mode=TwoWay}" />
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Navigation">
+        <TabControl>
+          <TabItem Header="Tabs">
+            <Grid ColumnDefinitions="*,*" RowDefinitions="*,*">
+              <controls:GroupBox Header="Top" Grid.Column="0" Grid.Row="0">
+                <TabControl>
+                  <TabItem Header="A" />
+                  <TabItem Header="B" />
+                  <TabItem Header="C" />
+                </TabControl>
+              </controls:GroupBox>
+              <controls:GroupBox Header="Bottom" Grid.Column="1" Grid.Row="0">
+                <TabControl TabStripPlacement="Bottom">
+                  <TabItem Header="A" />
+                  <TabItem Header="B" />
+                  <TabItem Header="C" />
+                </TabControl>
+              </controls:GroupBox>
+              <controls:GroupBox Header="Left" Grid.Column="0" Grid.Row="1">
+                <TabControl TabStripPlacement="Left">
+                  <TabItem Header="A" />
+                  <TabItem Header="B" />
+                  <TabItem Header="C" />
+                </TabControl>
+              </controls:GroupBox>
+              <controls:GroupBox Header="Right" Grid.Column="1" Grid.Row="1">
+                <TabControl TabStripPlacement="Right">
+                  <TabItem Header="A" />
+                  <TabItem Header="B" />
+                  <TabItem Header="C" />
+                </TabControl>
+              </controls:GroupBox>
+            </Grid>
+          </TabItem>
+          <TabItem Header="Pages">
+            <TabbedPage>
+              <ContentPage Header="Content">
+                <TextBlock Margin="8" Text="A simple content page" />
+              </ContentPage>
+              <NavigationPage Header="Navigation" x:Name="NavigationDemo" />
+              <DrawerPage Header="Drawer" IsOpen="True" DrawerLength="160">
+                <DrawerPage.Drawer>
+                  <StackPanel Margin="8">
+                    <Button Content="Drawer command" />
+                  </StackPanel>
+                </DrawerPage.Drawer>
+                <TextBlock Margin="8" Text="Drawer page content" />
+              </DrawerPage>
+              <CarouselPage Header="Carousel">
+                <ContentPage Header="First">
+                  <TextBlock Margin="8" Text="First carousel page" />
+                </ContentPage>
+                <ContentPage Header="Second">
+                  <TextBlock Margin="8" Text="Second carousel page" />
+                </ContentPage>
+              </CarouselPage>
+            </TabbedPage>
+          </TabItem>
+        </TabControl>
+      </TabItem>
+      <TabItem Header="Data display">
+        <StackPanel Orientation="Vertical">
+          <Label>ListBox:</Label>
+          <ListBox>
+            <ListBoxItem Content="Dog" />
+            <ListBoxItem Content="Cat" />
+            <ListBoxItem Content="Horse" />
+          </ListBox>
+          <Label>TreeView:</Label>
+          <TreeView>
+            <TreeViewItem Header="Root" IsExpanded="True">
+              <TreeViewItem Header="Item 1" />
+              <TreeViewItem Header="Item 2" />
+              <TreeViewItem Header="Item 3">
+                <TreeViewItem Header="More items" />
+              </TreeViewItem>
+              <TreeViewItem Header="Item 4" />
+            </TreeViewItem>
+          </TreeView>
+          <PipsPager NumberOfPages="4" SelectedPageIndex="1" IsPreviousButtonVisible="True" IsNextButtonVisible="True" />
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Feedback">
+        <Grid ColumnDefinitions="*,5,5*">
+          <HeaderedContentControl Header="Demo" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Center">
+              <Button Click="OpenSaveDialog">Open file dialog</Button>
+              <Button Click="OpenAboutDialog">About dialog</Button>
+              <Button Click="OpenFontDialog">Font dialog</Button>
+              <Button Click="OpenFindDialog">Find dialog</Button>
+            </StackPanel>
+          </HeaderedContentControl>
+          <HeaderedContentControl Header="Message Box" VerticalAlignment="Top" Grid.Column="2">
+            <Grid ColumnDefinitions="Auto,5,*" RowDefinitions="Auto,5,Auto,5,Auto,5,Auto,5,Auto">
+              <TextBlock Text="Caption (title):" Grid.Column="0" Grid.Row="0" />
+              <TextBlock Text="Text:" Grid.Column="0" Grid.Row="2" />
+              <TextBlock Text="Icon:" Grid.Column="0" Grid.Row="4" />
+              <TextBlock Text="Buttons:" Grid.Column="0" Grid.Row="6" />
+              <TextBox x:Name="MessageBoxCaption" Grid.Column="2" Grid.Row="0" Text="MessageBox Tester" />
+              <TextBox x:Name="MessageBoxText" Grid.Column="2" Grid.Row="2" Text="This is a test of Classic MessageBox" />
+              <ComboBox x:Name="MessageBoxIcon" SelectedIndex="0" Grid.Column="2" Grid.Row="4">
+                <ComboBoxItem>
+                  <dialogs:MessageBoxIcon>None</dialogs:MessageBoxIcon>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                  <dialogs:MessageBoxIcon>Information</dialogs:MessageBoxIcon>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                  <dialogs:MessageBoxIcon>Error</dialogs:MessageBoxIcon>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                  <dialogs:MessageBoxIcon>Question</dialogs:MessageBoxIcon>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                  <dialogs:MessageBoxIcon>Warning</dialogs:MessageBoxIcon>
+                </ComboBoxItem>
+              </ComboBox>
+              <ComboBox x:Name="MessageBoxButtons" SelectedIndex="0" Grid.Column="2" Grid.Row="6">
+                <ComboBoxItem>
+                  <dialogs:MessageBoxButtons>Ok</dialogs:MessageBoxButtons>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                  <dialogs:MessageBoxButtons>OkCancel</dialogs:MessageBoxButtons>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                  <dialogs:MessageBoxButtons>AbortRetryIgnore</dialogs:MessageBoxButtons>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                  <dialogs:MessageBoxButtons>YesNoCancel</dialogs:MessageBoxButtons>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                  <dialogs:MessageBoxButtons>YesNo</dialogs:MessageBoxButtons>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                  <dialogs:MessageBoxButtons>RetryCancel</dialogs:MessageBoxButtons>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                  <dialogs:MessageBoxButtons>CancelTryContinue</dialogs:MessageBoxButtons>
+                </ComboBoxItem>
+              </ComboBox>
+              <Button Grid.Column="2" Grid.Row="8" Click="OpenMessageBox">Show a messagebox</Button>
+            </Grid>
+          </HeaderedContentControl>
+        </Grid>
+      </TabItem>
+      <TabItem Header="Colors">
+        <ColorView Margin="12" VerticalAlignment="Top" HorizontalAlignment="Left" Color="Red" />
+      </TabItem>
+      <TabItem Header="Menus &amp; commands">
+        <StackPanel Margin="8" Spacing="12">
+          <CommandBar>
+            <CommandBar.PrimaryCommands>
+              <CommandBarButton Label="New" />
+              <CommandBarToggleButton Label="Pin" />
+              <CommandBarSeparator />
+              <CommandBarButton Label="Disabled" IsEnabled="False" />
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+              <CommandBarButton Label="Overflow command" />
+            </CommandBar.SecondaryCommands>
+          </CommandBar>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Theme resources">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+          <ItemsControl>
+            <demo:ColorBox ColorName="ActiveBorder" Color="{DynamicResource {x:Static common:SystemColors.ActiveBorderBrushKey}}" />
+            <demo:ColorBox ColorName="ActiveCaption" Color="{DynamicResource {x:Static common:SystemColors.ActiveCaptionBrushKey}}" />
+            <demo:ColorBox ColorName="ActiveCaptionText" Color="{DynamicResource {x:Static common:SystemColors.ActiveCaptionTextBrushKey}}" />
+            <demo:ColorBox ColorName="AppWorkspace" Color="{DynamicResource {x:Static common:SystemColors.AppWorkspaceBrushKey}}" />
+            <demo:ColorBox ColorName="Control" Color="{DynamicResource {x:Static common:SystemColors.ControlBrushKey}}" />
+            <demo:ColorBox ColorName="ControlDark" Color="{DynamicResource {x:Static common:SystemColors.ControlDarkBrushKey}}" />
+            <demo:ColorBox ColorName="ControlDarkDark" Color="{DynamicResource {x:Static common:SystemColors.ControlDarkDarkBrushKey}}" />
+            <demo:ColorBox ColorName="ControlLight" Color="{DynamicResource {x:Static common:SystemColors.ControlLightBrushKey}}" />
+            <demo:ColorBox ColorName="ControlLightLight" Color="{DynamicResource {x:Static common:SystemColors.ControlLightLightBrushKey}}" />
+            <demo:ColorBox ColorName="ControlText" Color="{DynamicResource {x:Static common:SystemColors.ControlTextBrushKey}}" />
+            <demo:ColorBox ColorName="Desktop" Color="{DynamicResource {x:Static common:SystemColors.DesktopBrushKey}}" />
+            <demo:ColorBox ColorName="GradientActiveCaption" Color="{DynamicResource {x:Static common:SystemColors.GradientActiveCaptionBrushKey}}" />
+            <demo:ColorBox ColorName="GradientInactiveCaption" Color="{DynamicResource {x:Static common:SystemColors.GradientInactiveCaptionBrushKey}}" />
+            <demo:ColorBox ColorName="GrayText" Color="{DynamicResource {x:Static common:SystemColors.GrayTextBrushKey}}" />
+            <demo:ColorBox ColorName="Highlight" Color="{DynamicResource {x:Static common:SystemColors.HighlightBrushKey}}" />
+            <demo:ColorBox ColorName="HighlightText" Color="{DynamicResource {x:Static common:SystemColors.HighlightTextBrushKey}}" />
+            <demo:ColorBox ColorName="HotTrack" Color="{DynamicResource {x:Static common:SystemColors.HotTrackBrushKey}}" />
+            <demo:ColorBox ColorName="InactiveBorder" Color="{DynamicResource {x:Static common:SystemColors.InactiveBorderBrushKey}}" />
+            <demo:ColorBox ColorName="InactiveCaption" Color="{DynamicResource {x:Static common:SystemColors.InactiveCaptionBrushKey}}" />
+            <demo:ColorBox ColorName="InactiveCaptionText" Color="{DynamicResource {x:Static common:SystemColors.InactiveCaptionTextBrushKey}}" />
+            <demo:ColorBox ColorName="Info" Color="{DynamicResource {x:Static common:SystemColors.InfoBrushKey}}" />
+            <demo:ColorBox ColorName="InfoText" Color="{DynamicResource {x:Static common:SystemColors.InfoTextBrushKey}}" />
+            <demo:ColorBox ColorName="Menu" Color="{DynamicResource {x:Static common:SystemColors.MenuBrushKey}}" />
+            <demo:ColorBox ColorName="MenuBar" Color="{DynamicResource {x:Static common:SystemColors.MenuBarBrushKey}}" />
+            <demo:ColorBox ColorName="MenuHighlight" Color="{DynamicResource {x:Static common:SystemColors.MenuHighlightBrushKey}}" />
+            <demo:ColorBox ColorName="MenuText" Color="{DynamicResource {x:Static common:SystemColors.MenuTextBrushKey}}" />
+            <demo:ColorBox ColorName="ScrollBar" Color="{DynamicResource {x:Static common:SystemColors.ScrollBarBrushKey}}" />
+            <demo:ColorBox ColorName="Window" Color="{DynamicResource {x:Static common:SystemColors.WindowBrushKey}}" />
+            <demo:ColorBox ColorName="WindowFrame" Color="{DynamicResource {x:Static common:SystemColors.WindowFrameBrushKey}}" />
+            <demo:ColorBox ColorName="WindowText" Color="{DynamicResource {x:Static common:SystemColors.WindowTextBrushKey}}" />
+            <demo:ColorBox ColorName="InactiveSelectionHighlight" Color="{DynamicResource {x:Static common:SystemColors.InactiveSelectionHighlightBrushKey}}" />
+            <demo:ColorBox ColorName="InactiveSelectionHighlightText" Color="{DynamicResource {x:Static common:SystemColors.InactiveSelectionHighlightTextBrushKey}}" />
+          </ItemsControl>
+        </ScrollViewer>
+      </TabItem>
+    </TabControl>
+  </DockPanel>
+  <Border Name="DialogOverlay" IsVisible="False" Background="#80000000" Padding="8">
+    <classic:ClassicBorderDecorator BorderStyle="Raised" BorderThickness="3" Background="{DynamicResource {x:Static common:SystemColors.ControlBrushKey}}" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="560">
+      <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Background="{DynamicResource {x:Static common:SystemColors.ActiveCaptionBrushKey}}" Margin="2">
+          <Button DockPanel.Dock="Right" Content="×" Click="CloseInlineDialog" />
+          <TextBlock Name="DialogTitle" Foreground="White" Margin="5" />
+        </DockPanel>
+        <ScrollViewer Name="DialogScroller" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" MaxHeight="560"><ContentControl Name="DialogContent" /></ScrollViewer>
+      </DockPanel>
+    </classic:ClassicBorderDecorator>
+  </Border>
+  </Grid>
+</UserControl>

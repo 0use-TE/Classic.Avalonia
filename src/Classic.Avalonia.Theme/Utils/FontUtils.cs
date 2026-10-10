@@ -16,7 +16,11 @@ internal class FontUtils
     {
         FontAliasingProperty.Changed.AddClassHandler<Control>((c, e) =>
         {
-            RenderOptions.SetTextRenderingMode(c, e.GetNewValue<bool?>() is true ? TextRenderingMode.Alias : TextRenderingMode.SubpixelAntialias);
+            var aliased = e.GetNewValue<bool?>() is true;
+            TextOptions.SetTextRenderingMode(c, aliased ? TextRenderingMode.Alias : TextRenderingMode.Antialias);
+            // Grid fitting preserves small Tahoma strokes; grayscale smoothing preserves fractional spacing.
+            TextOptions.SetTextHintingMode(c, TextHintingMode.Strong);
+            TextOptions.SetBaselinePixelAlignment(c, BaselinePixelAlignment.Aligned);
         });
     }
 }

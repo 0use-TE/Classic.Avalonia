@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <AvaloniaVersion>12.0.1</AvaloniaVersion>
-        <ClassicAvaloniaVersion>12.0.1-beta1</ClassicAvaloniaVersion>
-        <AvaloniaDataGridVersion>12.0.0</AvaloniaDataGridVersion>
-        <DockVersion>12.0.0</DockVersion>
+        <TargetFramework>net10.0</TargetFramework>
+        <AvaloniaVersion>[12.0.0]</AvaloniaVersion>
+        <ClassicAvaloniaVersion>12.0.0-beta1</ClassicAvaloniaVersion>
         <DiagnosticsVersion>2.2.0</DiagnosticsVersion>
     </PropertyGroup>
 </Project>

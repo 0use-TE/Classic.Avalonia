@@ -83,6 +83,15 @@
         <MergeResourceInclude Source="avares://Classic.Avalonia.Theme/Styles/MessageBox.axaml" />
         <MergeResourceInclude Source="avares://Classic.Avalonia.Theme/Styles/InputBox.axaml" />
 
+        <MergeResourceInclude Source="avares://Classic.Avalonia.Theme/Styles/CommandBar.axaml" />
+        <MergeResourceInclude Source="avares://Classic.Avalonia.Theme/Styles/ContentPage.axaml" />
+        <MergeResourceInclude Source="avares://Classic.Avalonia.Theme/Styles/CarouselPage.axaml" />
+        <MergeResourceInclude Source="avares://Classic.Avalonia.Theme/Styles/DrawerPage.axaml" />
+        <MergeResourceInclude Source="avares://Classic.Avalonia.Theme/Styles/NavigationPage.axaml" />
+        <MergeResourceInclude Source="avares://Classic.Avalonia.Theme/Styles/PipsPager.axaml" />
+        <MergeResourceInclude Source="avares://Classic.Avalonia.Theme/Styles/WindowDrawnDecorations.axaml" />
+        <MergeResourceInclude Source="avares://Classic.Avalonia.Theme/Styles/TabbedPage.axaml" />
+        <MergeResourceInclude Source="avares://Classic.Avalonia.Theme/Styles/GroupBox.axaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Styles.Resources>
