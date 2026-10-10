@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Classic.DockDemo"
+             xmlns:dock="using:GOZA.Dock"
+             xmlns:crystal="using:Crystal.Avalonia"
+             x:Class="Classic.DockDemo.MainView" x:DataType="local:MainViewModel"
+             crystal:ViewModelLocator.AutoWireViewModel="True">
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="local:DockDocument" x:DataType="local:DockDocument">
+      <TextBox Text="{Binding Text}" IsReadOnly="{Binding !IsClosable}" AcceptsReturn="True" TextWrapping="Wrap"
+               BorderThickness="0" Margin="2" />
+    </DataTemplate>
+  </UserControl.DataTemplates>
+  <DockPanel>
+    <Menu DockPanel.Dock="Top">
+      <MenuItem Header="_File">
+        <MenuItem Header="_New" Command="{Binding NewDocumentCommand}" />
+      </MenuItem>
+    </Menu>
+    <Border DockPanel.Dock="Top" Padding="4">
+      <WrapPanel Orientation="Horizontal">
+        <Button Content="New" Margin="0,0,8,0"
+                crystal:EventToCommand.RoutedEvent="{x:Static Button.ClickEvent}"
+                crystal:EventToCommand.Command="{Binding NewDocumentCommand}" />
+        <TextBlock Text="Color scheme:" VerticalAlignment="Center" Margin="0,0,6,0" />
+        <ComboBox Width="180" ItemsSource="{Binding Palettes}" SelectedItem="{Binding Palette}" />
+        <TextBlock Text="Panes:" VerticalAlignment="Center" Margin="10,0,6,0" />
+        <ComboBox Width="140" ItemsSource="{Binding PaneLayouts}" SelectedItem="{Binding PaneLayout}" />
+      </WrapPanel>
+    </Border>
+    <Border DockPanel.Dock="Bottom" Padding="6,3">
+      <TextBlock Text="{Binding Status}" />
+    </Border>
+    <DockShell x:Name="Workspace" ClassicDock.IsEnabled="True" PanePresentation="{Binding PaneLayout}">
+      <Grid ColumnDefinitions="200,Auto,*" RowDefinitions="*,Auto,150">
+        <DockRegion x:Name="ExplorerRegion" Grid.RowSpan="3" ItemsSource="{Binding Explorer}" />
+        <DockSplitter Grid.Column="1" Grid.RowSpan="3" />
+        <DockRegion x:Name="DocumentRegion" Grid.Column="2" ItemsSource="{Binding Documents}"
+                    ShowAddButton="True" AddTabCommand="{Binding NewDocumentCommand}" />
+        <DockSplitter Grid.Column="2" Grid.Row="1" />
+        <DockRegion x:Name="OutputRegion" Grid.Column="2" Grid.Row="2" ItemsSource="{Binding Output}" />
+      </Grid>
+    </DockShell>
+  </DockPanel>
+</UserControl>

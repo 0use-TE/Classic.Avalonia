@@ -52,7 +52,19 @@ For the ColorPicker, add a project reference and include the style in `App.axaml
 <StyleInclude Source="avares://Classic.Avalonia.Theme.ColorPicker/Classic.axaml"/>
 ```
 
-The DataGrid and Dock theme projects are not present in this checkout; their historical package instructions do not apply to the current project-reference setup.
+The DataGrid theme project is not present in this checkout. GOZA.Dock has a separate classic adapter; historical Dock package instructions do not apply.
+
+### GOZA.Dock
+
+Reference `src/GOZA.Dock.Themes.Classic/GOZA.Dock.Themes.Classic.csproj`, which uses GOZA.Dock 3.0.9. Keep the host's `ClassicTheme` and `.WithClassicFont()`, then opt each shell in:
+
+```xml
+<DockShell ClassicDock.IsEnabled="True">
+    <!-- Your DockRegion / DockSplitter layout -->
+</DockShell>
+```
+
+`ClassicDock` is registered in Avalonia's default XAML namespace; no extra namespace prefix is required. Leave `ColorTheme` unset so VS Code colors do not override the classic palette. Run `samples/Classic.Dock.Demo.Desktop` for the standalone Crystal workspace with Windows 98 tabs, or select **Dock** in the main demo. See [the Dock guide](docs/guides/dock.md).
 
 ### Color Scheme
 

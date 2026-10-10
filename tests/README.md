@@ -1,6 +1,6 @@
 # Verification
 
-Verified on Windows with .NET SDK 10.0.401 on 2026-10-10. The current Release suite passes 63 test cases, with no skipped cases. These results establish functional smoke coverage, not exhaustive platform certification. Following the user's instruction, the theme updates use build-only checks for Browser and mobile hosts.
+Verified on Windows with .NET SDK 10.0.401. The last full Release run on 2026-10-10 passed 70 test cases, with no skipped cases. The latest scoped Dock run on 2026-10-11 passed 19 cases, including real pointer dragging in all four tab directions, the title/close-button gap, independent transparent black dashed target outlines, drop/cancel cleanup, disabling/re-enabling the adapter, and all six combinations of three header styles and two pane layouts with pointer hover/selection and adjacent bottom/top headers; unrelated tests were not rerun. Screenshots are saved at `artifacts/verification/classic-dock-drop-outline.png` and `classic-dock-{header}-{layout}.png`. The updated standalone Debug host also compiled successfully. These results establish functional smoke coverage, not exhaustive platform certification. Following the user's instruction, the theme updates use build-only checks for Browser and mobile hosts.
 
 ## Commands
 
@@ -28,7 +28,9 @@ Use the HTTP URL printed by the Browser host. Restart that host after rebuilding
 | Classic.Demo.iOS | Simulator-target managed compilation on Windows; no Xcode packaging or simulator execution |
 | Notepad | Release build; encoding preservation, unsupported characters, dirty state, unsaved-document cancellation, atomic save, search/replace, edit commands and generated print HTML |
 | AvaloniaExplorer | Release build; URI normalization/invalid input, toolbar selection and Internet Options tabs/OK; native WebView networking not tested by Headless |
-| Classic.Avalonia.Tests | All 63 Release cases passed |
+| GOZA.Dock.Themes.Classic | GOZA.Dock 3.0.9; four tab directions, classic templates, 14 palettes, reversible per-shell activation, close/add/maximize and Crystal startup |
+| Classic.Dock.Demo / Classic.Dock.Demo.Desktop | Shared Crystal workspace; prefix-free ClassicDock XAML, fixed Win98 tabs with no Tabs selector; standalone desktop build and auto-wired window regression; reused in the main demo's Dock page |
+| Classic.Avalonia.Tests | Last full Release run: 70 passed; latest scoped Dock run: 19 passed |
 
 ## Regression Fixes
 
@@ -70,7 +72,7 @@ The Browser Release publish and strict DocFX build passed. `Prepare-GitHubPages.
 
 ## Library NativeAOT
 
-All three libraries passed strict AOT/trim analysis and Windows x64 NativeAOT publishing in two modes: all library members rooted for analysis, and normal application trimming without those roots. Both native executables passed 293 assertions with dynamic code unavailable. Coverage includes embedded fonts, 26 control templates, nested side-tab alignment, 14 palettes, picker commit/cancel behavior, color editing and four dialog types. Binding diagnostics fail the test; no blanket IL warning suppression is used.
+The three base libraries and GOZA.Dock.Themes.Classic passed strict AOT/trim analysis and Windows x64 NativeAOT publishing in two modes: all repository library members rooted for analysis, and normal application trimming without those roots. Both native executables passed 318 assertions with dynamic code unavailable. Coverage includes embedded fonts, 26 control templates, nested side-tab alignment, 14 palettes, picker commit/cancel behavior, color editing, four dialog types, and Dock templates, selection, palette switching and maximization. Binding diagnostics fail the test; no blanket IL warning suppression is used.
 
 ```powershell
 dotnet publish tests/Classic.Avalonia.AotTests/Classic.Avalonia.AotTests.csproj -c Release -r win-x64 -p:AnalyzeAllLibraryMembers=true -p:GeneratePackageOnBuild=false -o artifacts/aot/library-analysis

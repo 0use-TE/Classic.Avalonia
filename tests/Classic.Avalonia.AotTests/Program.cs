@@ -21,7 +21,7 @@ public sealed partial class TestApp : Application
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
 }
 
-internal static class Program
+internal static partial class Program
 {
     private static int _checks;
 
@@ -81,6 +81,7 @@ internal static class Program
 
     private static void RunChecks()
     {
+        RunDockChecks();
         foreach (var weight in new[] { FontWeight.Normal, FontWeight.Bold })
         {
             Require(FontManager.Current.TryGetGlyphTypeface(new Typeface(new FontFamily("fonts:Classic#Tahoma"),

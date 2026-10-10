@@ -1,0 +1,113 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:GOZA.Dock.Controls"
+        xmlns:classic="using:Classic.Avalonia.Theme"
+        xmlns:common="using:Classic.CommonControls"
+        xmlns:adapter="using:GOZA.Dock.Themes.Classic"
+        x:Class="GOZA.Dock.Themes.Classic.ClassicDockStyles"
+        x:ClassModifier="internal">
+  <Styles.Resources>
+    <ControlTheme x:Key="ClassicDockTabTheme" TargetType="TabStripItem">
+      <Setter Property="Background" Value="{DynamicResource surface.background}" />
+      <Setter Property="Foreground" Value="{DynamicResource surface.foreground}" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="VerticalContentAlignment" Value="Stretch" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="PART_DockTabSurface" Background="{TemplateBinding Background}" CornerRadius="0">
+            <classic:ClassicBorderDecorator Name="PART_ClassicTabBorder"
+                BorderBrush="{x:Static classic:ClassicBorderDecorator.ClassicBorderBrush}"
+                BorderStyle="TabTop" BorderThickness="2">
+              <ContentPresenter Name="PART_ContentPresenter"
+                  Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </classic:ClassicBorderDecorator>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:selected">
+        <Setter Property="ZIndex" Value="1" />
+      </Style>
+      <Style Selector="^:disabled">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static common:SystemColors.GrayTextBrushKey}}" />
+      </Style>
+    </ControlTheme>
+    <ControlTheme x:Key="ClassicDockButtonTheme" TargetType="controls:DockHeaderButton">
+      <Setter Property="Background" Value="{DynamicResource surface.background}" />
+      <Setter Property="Foreground" Value="{DynamicResource surface.foreground}" />
+      <Setter Property="Padding" Value="2" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <classic:ClassicBorderDecorator Name="PART_ClassicButtonBorder"
+              BorderBrush="{x:Static classic:ClassicBorderDecorator.ClassicBorderBrush}"
+              BorderStyle="Raised" BorderThickness="2" Background="{TemplateBinding Background}">
+            <ContentPresenter Name="PART_ContentPresenter" Margin="{TemplateBinding Padding}"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+          </classic:ClassicBorderDecorator>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:pressed /template/ classic|ClassicBorderDecorator#PART_ClassicButtonBorder">
+        <Setter Property="BorderStyle" Value="RaisedPressed" />
+      </Style>
+      <Style Selector="^:disabled">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static common:SystemColors.GrayTextBrushKey}}" />
+      </Style>
+    </ControlTheme>
+  </Styles.Resources>
+  <Style Selector="controls|DockShell">
+    <Setter Property="PanePresentation" Value="ClassicSeams" />
+    <Setter Property="TabStripSize" Value="28" />
+  </Style>
+  <Style Selector="controls|DockShell.classic-dock-tabs">
+    <Setter Property="TabPresentation" Value="ClassicTabs" />
+  </Style>
+  <Style Selector="controls|DockShell.classic-dock-tabs:classic-tabs controls|DockRegion">
+    <Setter Property="TabItemTheme" Value="{StaticResource ClassicDockTabTheme}" />
+  </Style>
+  <Style Selector="controls|DockShell controls|DockRegion /template/ Border#PART_DropHint">
+    <Setter Property="adapter:ClassicDock.DropOutline" Value="True" />
+  </Style>
+  <Style Selector="controls|DockHeaderButton">
+    <Setter Property="Theme" Value="{StaticResource ClassicDockButtonTheme}" />
+    <Setter Property="CornerRadius" Value="0" />
+  </Style>
+  <Style Selector="controls|DockTabHeader">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />
+  </Style>
+  <Style Selector="controls|DockTabHeader /template/ controls|DockHeaderButton.dock-tab-close">
+    <Setter Property="Margin" Value="{DynamicResource ClassicDockTabCloseGap}" />
+  </Style>
+  <Style Selector="controls|DockShell.classic-dock-tabs:classic-tabs controls|DockRegion:top TabStripItem /template/ classic|ClassicBorderDecorator#PART_ClassicTabBorder">
+    <Setter Property="BorderStyle" Value="TabTop" />
+  </Style>
+  <Style Selector="controls|DockShell.classic-dock-tabs:classic-tabs controls|DockRegion:bottom TabStripItem /template/ classic|ClassicBorderDecorator#PART_ClassicTabBorder">
+    <Setter Property="BorderStyle" Value="TabBottom" />
+  </Style>
+  <Style Selector="controls|DockShell.classic-dock-tabs:classic-tabs controls|DockRegion:left TabStripItem /template/ classic|ClassicBorderDecorator#PART_ClassicTabBorder">
+    <Setter Property="BorderStyle" Value="TabLeft" />
+  </Style>
+  <Style Selector="controls|DockShell.classic-dock-tabs:classic-tabs controls|DockRegion:right TabStripItem /template/ classic|ClassicBorderDecorator#PART_ClassicTabBorder">
+    <Setter Property="BorderStyle" Value="TabRight" />
+  </Style>
+  <Style Selector="controls|DockShell.classic-dock-tabs:classic-tabs controls|DockRegion:top TabStripItem:selected">
+    <Setter Property="Margin" Value="0,-2,0,-1" />
+  </Style>
+  <Style Selector="controls|DockShell.classic-dock-tabs:classic-tabs controls|DockRegion:bottom TabStripItem:selected">
+    <Setter Property="Margin" Value="0,-1,0,-2" />
+  </Style>
+  <Style Selector="controls|DockShell.classic-dock-tabs:classic-tabs controls|DockRegion:left TabStripItem:selected">
+    <Setter Property="Margin" Value="-2,0,-1,0" />
+  </Style>
+  <Style Selector="controls|DockShell.classic-dock-tabs:classic-tabs controls|DockRegion:right TabStripItem:selected">
+    <Setter Property="Margin" Value="-1,0,-2,0" />
+  </Style>
+  <Style Selector="controls|DockShell.classic-dock-tabs:classic-tabs controls|DockRegion TabStripItem:pressed /template/ Border#PART_DockTabSurface">
+    <Setter Property="Background" Value="{DynamicResource {x:Static common:SystemColors.ControlDarkBrushKey}}" />
+  </Style>
+  <Style Selector="Border.dock-tab-placement-popup">
+    <Setter Property="CornerRadius" Value="0" />
+  </Style>
+</Styles>

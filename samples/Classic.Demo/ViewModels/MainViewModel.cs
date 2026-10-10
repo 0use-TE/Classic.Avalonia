@@ -9,6 +9,7 @@ namespace Classic.Demo.ViewModels;
 public partial class MainViewModel : ViewModelBase
 {
     public DataDisplayViewModel DataDisplay { get; }
+    public Classic.DockDemo.MainViewModel DockWorkspace { get; }
     public ObservableCollection<PersonViewModel> People => DataDisplay.People;
 
     [ObservableProperty]
@@ -48,8 +49,9 @@ public partial class MainViewModel : ViewModelBase
         };
     }
 
-    public MainViewModel(DataDisplayViewModel dataDisplay)
+    public MainViewModel(DataDisplayViewModel dataDisplay, Classic.DockDemo.MainViewModel dockWorkspace)
     {
         DataDisplay = dataDisplay;
+        DockWorkspace = dockWorkspace;
     }
 }

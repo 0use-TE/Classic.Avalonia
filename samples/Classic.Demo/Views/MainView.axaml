@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:classic="clr-namespace:Classic.Avalonia.Theme;assembly=Classic.Avalonia.Theme" xmlns:demo="clr-namespace:Classic.Demo" xmlns:vm="using:Classic.Demo.ViewModels" xmlns:views="using:Classic.Demo.Views" xmlns:crystal="using:Crystal.Avalonia" xmlns:common="clr-namespace:Classic.CommonControls;assembly=Classic.CommonControls.Avalonia" xmlns:controls="clr-namespace:Classic.Avalonia.Theme.Controls;assembly=Classic.Avalonia.Theme" xmlns:commonControls="clr-namespace:Classic.CommonControls;assembly=Classic.CommonControls.Avalonia" xmlns:dialogs="clr-namespace:Classic.CommonControls.Dialogs;assembly=Classic.CommonControls.Avalonia" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600" x:Class="Classic.Demo.Views.MainView" x:DataType="vm:MainViewModel" crystal:ViewModelLocator.AutoWireViewModel="True">
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:classic="clr-namespace:Classic.Avalonia.Theme;assembly=Classic.Avalonia.Theme" xmlns:demo="clr-namespace:Classic.Demo" xmlns:vm="using:Classic.Demo.ViewModels" xmlns:views="using:Classic.Demo.Views" xmlns:dockExample="using:Classic.DockDemo" xmlns:crystal="using:Crystal.Avalonia" xmlns:common="clr-namespace:Classic.CommonControls;assembly=Classic.CommonControls.Avalonia" xmlns:controls="clr-namespace:Classic.Avalonia.Theme.Controls;assembly=Classic.Avalonia.Theme" xmlns:commonControls="clr-namespace:Classic.CommonControls;assembly=Classic.CommonControls.Avalonia" xmlns:dialogs="clr-namespace:Classic.CommonControls.Dialogs;assembly=Classic.CommonControls.Avalonia" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600" x:Class="Classic.Demo.Views.MainView" x:DataType="vm:MainViewModel" crystal:ViewModelLocator.AutoWireViewModel="True">
   <UserControl.Styles>
     <Style Selector="TabControl#DemoCategories.compact /template/ ItemsPresenter#PART_ItemsPresenter">
       <Setter Property="Width" Value="0" />
@@ -430,6 +430,10 @@
             </CommandBar.SecondaryCommands>
           </CommandBar>
         </StackPanel>
+      </TabItem>
+      <TabItem Header="Dock">
+        <dockExample:MainView
+                              DataContext="{Binding DockWorkspace}" Height="560" />
       </TabItem>
       <TabItem Header="Theme resources">
         <ScrollViewer VerticalScrollBarVisibility="Auto">

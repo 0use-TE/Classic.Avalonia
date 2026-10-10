@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <IsAotCompatible>true</IsAotCompatible>
+    <Description>Classic Windows chrome for GOZA.Dock.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="GOZA.Dock" Version="3.0.9" />
+    <ProjectReference Include="../Classic.Avalonia.Theme/Classic.Avalonia.Theme.csproj" />
+  </ItemGroup>
+</Project>

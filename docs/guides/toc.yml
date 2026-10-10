@@ -6,6 +6,8 @@
   href: controls.md
 - name: Crystal 示例架构
   href: samples.md
+- name: GOZA.Dock 经典主题
+  href: dock.md
 - name: 平台支持与已知限制
   href: platforms.md
 - name: NativeAOT 支持

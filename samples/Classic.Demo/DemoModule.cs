@@ -10,6 +10,7 @@ public sealed class DemoModule : IModule
     public void RegisterServices(IServiceCollection services)
     {
         services.AddTransient<DataDisplayViewModel>();
+        services.AddMvvmTransient<Classic.DockDemo.MainView, Classic.DockDemo.MainViewModel>();
     }
 
     public void InitializeModule(IServiceProvider services)

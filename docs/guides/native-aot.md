@@ -1,6 +1,6 @@
 # NativeAOT 支持
 
-Classic.Avalonia.Theme、Classic.CommonControls.Avalonia、Classic.Avalonia.Theme.ColorPicker 支持 NativeAOT，三个项目均声明 IsAotCompatible=true。检查对象是库本身，不以某个示例应用启动成功作为唯一依据。
+Classic.Avalonia.Theme、Classic.CommonControls.Avalonia、Classic.Avalonia.Theme.ColorPicker 及 GOZA.Dock.Themes.Classic 支持 NativeAOT，四个项目均声明 IsAotCompatible=true。Dock 适配项目依赖 GOZA.Dock 3.0.9。检查对象是库本身，不以某个示例应用启动成功作为唯一依据。
 
 ## 库级检查结果
 
@@ -8,11 +8,11 @@ Classic.Avalonia.Theme、Classic.CommonControls.Avalonia、Classic.Avalonia.Them
 
 | 检查 | 结果 |
 | --- | --- |
-| 三个库的 AOT 与裁剪分析器 | 无 IL/AOT 兼容性告警 |
-| 将三个库的全部成员纳入 NativeAOT 编译分析 | 成功；未添加告警抑制 |
+| 四个库的 AOT 与裁剪分析器 | 无 IL/AOT 兼容性告警 |
+| 将四个库的全部成员纳入 NativeAOT 编译分析 | 成功；未添加告警抑制 |
 | 正常裁剪的 NativeAOT 发布 | 成功；不要求应用保留整个库程序集 |
-| 运行库专用 NativeAOT 验证程序 | 293 项断言通过；IsDynamicCodeSupported=false |
-| 同一程序在正常裁剪的 NativeAOT 产物中运行 | 293 项断言通过 |
+| 运行库专用 NativeAOT 验证程序 | 318 项断言通过；IsDynamicCodeSupported=false |
+| 同一程序在正常裁剪的 NativeAOT 产物中运行 | 318 项断言通过 |
 
 运行检查涵盖 Tahoma 两个字重与可打印英文字符、26 种控件的模板和布局、嵌套左右标签的独立行列定义与对齐、全部 14 个配色、日期确认、时间确认/取消及重新打开、颜色编辑双向绑定，以及 MessageBox、AboutDialog、FontDialog、InputBox 的绑定、命令和返回结果。检查记录绑定告警并将其视为失败。
 
@@ -27,7 +27,7 @@ Classic.Avalonia.Theme、Classic.CommonControls.Avalonia、Classic.Avalonia.Them
 - 应用 ViewModel 优先使用带 x:DataType 的编译绑定，主题不能替应用保留任意反射成员。
 - 每个平台主机注册 WithClassicFont，并提供其所需的 Avalonia 原生图形依赖。
 
-不需要给三个库补充大范围的 linker 保留文件或关闭裁剪/AOT 分析器。
+不需要给四个库补充大范围的 linker 保留文件或关闭裁剪/AOT 分析器。
 
 ## 复现库级验证
 

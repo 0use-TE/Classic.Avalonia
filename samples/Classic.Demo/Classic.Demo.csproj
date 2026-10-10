@@ -28,6 +28,7 @@
     
 
     <ItemGroup>
+      <ProjectReference Include="../Classic.Dock.Demo/Classic.Dock.Demo.csproj" />
       <ProjectReference Include="..\..\src\Classic.Avalonia.Theme.ColorPicker\Classic.Avalonia.Theme.ColorPicker.csproj" />
       <ProjectReference Include="..\..\src\Classic.Avalonia.Theme\Classic.Avalonia.Theme.csproj" />
     </ItemGroup>

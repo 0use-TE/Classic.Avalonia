@@ -1,0 +1,52 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:common="using:Classic.CommonControls"
+                    x:Class="GOZA.Dock.Themes.Classic.ClassicDockPalette"
+                    x:ClassModifier="internal">
+    <SolidColorBrush x:Key="editor.background" Color="{DynamicResource {x:Static common:SystemColors.WindowColorKey}}" />
+    <SolidColorBrush x:Key="editor.foreground" Color="{DynamicResource {x:Static common:SystemColors.WindowTextColorKey}}" />
+    <SolidColorBrush x:Key="editorGroup.border" Color="{DynamicResource {x:Static common:SystemColors.ControlDarkColorKey}}" />
+    <SolidColorBrush x:Key="editorGroupHeader.tabsBackground" Color="{DynamicResource {x:Static common:SystemColors.ControlColorKey}}" />
+    <SolidColorBrush x:Key="editorGroupHeader.tabsBorder" Color="{DynamicResource {x:Static common:SystemColors.ControlDarkColorKey}}" />
+    <SolidColorBrush x:Key="surface.background" Color="{DynamicResource {x:Static common:SystemColors.ControlColorKey}}" />
+    <SolidColorBrush x:Key="surface.foreground" Color="{DynamicResource {x:Static common:SystemColors.ControlTextColorKey}}" />
+    <SolidColorBrush x:Key="surface.border" Color="{DynamicResource {x:Static common:SystemColors.ControlDarkColorKey}}" />
+    <SolidColorBrush x:Key="tab.activeBackground" Color="{DynamicResource {x:Static common:SystemColors.ControlLightLightColorKey}}" />
+    <SolidColorBrush x:Key="tab.inactiveBackground" Color="{DynamicResource {x:Static common:SystemColors.ControlColorKey}}" />
+    <SolidColorBrush x:Key="tab.hoverBackground" Color="{DynamicResource {x:Static common:SystemColors.ControlLightColorKey}}" />
+    <SolidColorBrush x:Key="tab.activeForeground" Color="{DynamicResource {x:Static common:SystemColors.ControlTextColorKey}}" />
+    <SolidColorBrush x:Key="tab.inactiveForeground" Color="{DynamicResource {x:Static common:SystemColors.ControlTextColorKey}}" />
+    <SolidColorBrush x:Key="tab.hoverForeground" Color="{DynamicResource {x:Static common:SystemColors.ControlTextColorKey}}" />
+    <SolidColorBrush x:Key="tab.border" Color="{DynamicResource {x:Static common:SystemColors.ControlDarkColorKey}}" />
+    <SolidColorBrush x:Key="tab.activeBorder" Color="{DynamicResource {x:Static common:SystemColors.ControlLightLightColorKey}}" />
+    <SolidColorBrush x:Key="tab.activeBorderTop" Color="{DynamicResource {x:Static common:SystemColors.HighlightColorKey}}" />
+    <SolidColorBrush x:Key="modernEditorTab.activeBackground" Color="{DynamicResource {x:Static common:SystemColors.ControlLightLightColorKey}}" />
+    <SolidColorBrush x:Key="modernEditorTab.inactiveBackground" Color="{DynamicResource {x:Static common:SystemColors.ControlColorKey}}" />
+    <SolidColorBrush x:Key="modernEditorTab.hoverBackground" Color="{DynamicResource {x:Static common:SystemColors.ControlLightColorKey}}" />
+    <SolidColorBrush x:Key="modernEditorTab.activeHoverBackground" Color="{DynamicResource {x:Static common:SystemColors.ControlLightLightColorKey}}" />
+    <SolidColorBrush x:Key="modernEditorTab.hoverForeground" Color="{DynamicResource {x:Static common:SystemColors.ControlTextColorKey}}" />
+    <SolidColorBrush x:Key="modernEditorTab.activeForeground" Color="{DynamicResource {x:Static common:SystemColors.ControlTextColorKey}}" />
+    <SolidColorBrush x:Key="icon.foreground" Color="{DynamicResource {x:Static common:SystemColors.ControlTextColorKey}}" />
+    <SolidColorBrush x:Key="focusBorder" Color="{DynamicResource {x:Static common:SystemColors.HighlightColorKey}}" />
+    <SolidColorBrush x:Key="sash.hoverBorder" Color="{DynamicResource {x:Static common:SystemColors.ControlDarkColorKey}}" />
+    <SolidColorBrush x:Key="toolbar.hoverBackground" Color="{DynamicResource {x:Static common:SystemColors.ControlColorKey}}" />
+    <SolidColorBrush x:Key="toolbar.activeBackground" Color="{DynamicResource {x:Static common:SystemColors.ControlColorKey}}" />
+    <SolidColorBrush x:Key="toolbar.hoverOutline" Color="{DynamicResource {x:Static common:SystemColors.ControlDarkColorKey}}" />
+    <SolidColorBrush x:Key="titleBar.activeBackground" Color="{DynamicResource {x:Static common:SystemColors.ControlColorKey}}" />
+    <SolidColorBrush x:Key="titleBar.activeForeground" Color="{DynamicResource {x:Static common:SystemColors.ControlTextColorKey}}" />
+    <SolidColorBrush x:Key="titleBar.border" Color="{DynamicResource {x:Static common:SystemColors.ControlDarkColorKey}}" />
+    <SolidColorBrush x:Key="DockDropHintBackgroundBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="DockDropHintBorderBrush" Color="Black" />
+    <SolidColorBrush x:Key="DockDragGhostBackgroundBrush" Color="{DynamicResource {x:Static common:SystemColors.ControlColorKey}}" />
+    <SolidColorBrush x:Key="DockDragGhostBorderBrush" Color="{DynamicResource {x:Static common:SystemColors.ControlDarkDarkColorKey}}" />
+    <SolidColorBrush x:Key="DockDragGhostForegroundBrush" Color="{DynamicResource {x:Static common:SystemColors.ControlTextColorKey}}" />
+    <CornerRadius x:Key="DockPaneCornerRadius">0</CornerRadius>
+    <CornerRadius x:Key="DockTabCornerRadius">0</CornerRadius>
+    <CornerRadius x:Key="DockDragGhostCornerRadius">0</CornerRadius>
+    <Thickness x:Key="DockPaneBorderThickness">1</Thickness>
+    <Thickness x:Key="DockShellPadding">4</Thickness>
+    <Thickness x:Key="DockTabPadding">6,0,6,0</Thickness>
+    <Thickness x:Key="DockTabPaddingClosable">6,0,2,0</Thickness>
+    <Thickness x:Key="ClassicDockTabCloseGap">6,0,0,0</Thickness>
+    <Thickness x:Key="DockDropHintBorderThickness">0</Thickness>
+</ResourceDictionary>

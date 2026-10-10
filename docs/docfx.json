@@ -7,7 +7,8 @@
           "files": [
             "src/Classic.CommonControls.Avalonia/Classic.CommonControls.Avalonia.csproj",
             "src/Classic.Avalonia.Theme/Classic.Avalonia.Theme.csproj",
-            "src/Classic.Avalonia.Theme.ColorPicker/Classic.Avalonia.Theme.ColorPicker.csproj"
+            "src/Classic.Avalonia.Theme.ColorPicker/Classic.Avalonia.Theme.ColorPicker.csproj",
+            "src/GOZA.Dock.Themes.Classic/GOZA.Dock.Themes.Classic.csproj"
           ]
         }
       ],
